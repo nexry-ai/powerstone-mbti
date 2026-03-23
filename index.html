@@ -461,7 +461,7 @@ function playSparkle() {
 
 // ======== Toast Notifications ========
 const toastCities = ['東京','大阪','名古屋','福岡','札幌','横浜','神戸','京都','仙台','広島'];
-const toastStoneNames = ['ラピスラズリ','ローズクォーツ','シトリン','タイガーアイ','アメジスト','オブシディアン','ラブラドライト','ムーンストーン','サンストーン'];
+const toastStoneNames = ['ラピスラズリ','ラリマー','ルチルクォーツ','翡翠','ラブラドライト','サンストーン','スギライト','ムーンストーン','カーネリアン'];
 
 function showToast() {
   const el = document.getElementById('toast-notification');
@@ -511,49 +511,49 @@ const mbtiTypes = [
 ];
 
 const mbtiStoneMap = {
-  INTJ:'labradorite', INTP:'lapis', ENTJ:'tiger', ENTP:'citrine',
-  INFJ:'amethyst', INFP:'rose', ENFJ:'rose', ENFP:'sunstone',
-  ISTJ:'obsidian', ISFJ:'moonstone', ESTJ:'tiger', ESFJ:'rose',
-  ISTP:'obsidian', ISFP:'labradorite', ESTP:'citrine', ESFP:'sunstone',
+  INTJ:'intuition', INTP:'transform', ENTJ:'action', ENTP:'create',
+  INFJ:'heal', INFP:'love', ENFJ:'balance', ENFP:'create',
+  ISTJ:'protect', ISFJ:'protect', ESTJ:'wealth', ESFJ:'love',
+  ISTP:'action', ISFP:'balance', ESTP:'wealth', ESFP:'create',
 };
 
 const stones = {
-  lapis:{name:'ラピスラズリ',nameEn:'LAPIS LAZULI',icon:'💎',rarity:8.3,traits:['知的探究心の強化','真実を見抜く直感','独自の世界観','深い内省力'],chakra:'第6チャクラ',
-    compat:[{stone:'amethyst',pct:95,types:'INFJ・INFP'},{stone:'labradorite',pct:88,types:'INTJ・ISFP'}],
-    message:'INTPの論理的思考とラピスラズリの「真実の石」としての力は、最高の相性。\n\nあなたの強みである分析力をさらに研ぎ澄まし、複雑な問題の本質を見抜く力を増幅させます。\n\n内向的なあなたが、自分の世界で深く思考する時間を、この石はさらに豊かにしてくれます。',
-    reason:'INTPの「知りたい」という根源的欲求に、ラピスラズリの叡智のエネルギーが共鳴するため'},
-  rose:{name:'ローズクォーツ',nameEn:'ROSE QUARTZ',icon:'🌹',rarity:18.2,traits:['共感力の増幅','人間関係の調和','自己受容','心の癒し'],chakra:'第4チャクラ',
-    compat:[{stone:'amethyst',pct:97,types:'INFJ・ISFJ'},{stone:'lapis',pct:85,types:'INTP・INTJ'}],
-    message:'あなたの高い共感力と人を思いやる心は、ローズクォーツのエネルギーと深く共鳴します。\n\n他者のために尽くしすぎて疲れてしまうあなたを、この石は優しく守ります。\n\n「自分を愛することは、人を愛すること」。そのバランスをこの石が教えてくれます。',
-    reason:'他者への献身が強いタイプだからこそ、自己愛を補うローズクォーツが必要'},
-  citrine:{name:'シトリン',nameEn:'CITRINE',icon:'🔶',rarity:14.5,traits:['アイデアの具現化','金運・成功運','ポジティブ思考','挑戦する勇気'],chakra:'第3チャクラ',
-    compat:[{stone:'tiger',pct:92,types:'ENTJ・ESTJ'},{stone:'labradorite',pct:84,types:'ENTP・ISFP'}],
-    message:'次々と湧き出るアイデアを、現実の成果に変える力。それがシトリンがあなたに与えるギフトです。\n\n発想力は豊かだけど、実行が追いつかない——そんなあなたの弱点を補い、思考を行動に変えるエネルギーを与えます。\n\n「面白い」を「稼げる」に変える石です。',
-    reason:'発想力に優れるが実行力が課題のタイプに、具現化のエネルギーを与えるため'},
-  tiger:{name:'タイガーアイ',nameEn:"TIGER'S EYE",icon:'🐯',rarity:15.8,traits:['決断力の覚醒','リーダーシップ','目標達成力','揺るがない意志'],chakra:'第3チャクラ',
-    compat:[{stone:'citrine',pct:93,types:'ENTP・ESTP'},{stone:'obsidian',pct:87,types:'ISTJ・ISTP'}],
-    message:'生まれながらのリーダーであるあなたに、タイガーアイはさらなる決断力と実行力を与えます。\n\n目標に向かって一直線に進む力。周囲を巻き込み、導く力。すべてが増幅されます。\n\nただし、この石はあなたに「立ち止まる勇気」も教えてくれます。',
-    reason:'リーダータイプの決断力をさらに研ぎ澄まし、同時に柔軟性も与えるため'},
-  amethyst:{name:'アメジスト',nameEn:'AMETHYST',icon:'💜',rarity:12.1,traits:['深い直感力','精神的な安定','スピリチュアル覚醒','内なる平和'],chakra:'第7チャクラ',
-    compat:[{stone:'rose',pct:96,types:'ENFJ・ESFJ'},{stone:'lapis',pct:89,types:'INTP・INTJ'}],
-    message:'INFJの稀有な直感力と、アメジストの霊的エネルギーは、最も深い共鳴を生み出します。\n\n人の心を読み取りすぎて疲弊するあなたを、この石は静かに浄化し、保護します。\n\n世界で最も希少なMBTIタイプと、最も神聖な石の組み合わせ。それがあなたです。',
-    reason:'最も稀少なINFJタイプの繊細な感受性を、アメジストの浄化力が守るため'},
-  obsidian:{name:'オブシディアン',nameEn:'OBSIDIAN',icon:'🖤',rarity:11.7,traits:['強力な守護','グラウンディング','本質を見抜く力','不要なものを断つ'],chakra:'第1チャクラ',
-    compat:[{stone:'tiger',pct:90,types:'ENTJ・ESTJ'},{stone:'lapis',pct:86,types:'INTP・INTJ'}],
-    message:'現実主義者であるあなたに、オブシディアンは「見えない守護」を与えます。\n\n合理的思考を持つあなたでも、無意識に受けるネガティブなエネルギーは存在します。\n\nこの石は不要な人間関係、不要な感情、不要な執着を鋭く断ち切る力を与えます。',
-    reason:'現実的で堅実なタイプに、目に見えないエネルギーレベルの守護を加えるため'},
-  labradorite:{name:'ラブラドライト',nameEn:'LABRADORITE',icon:'🌌',rarity:6.9,traits:['創造力の爆発','変容と進化','多面的な才能','直感と論理の融合'],chakra:'第6チャクラ',
-    compat:[{stone:'lapis',pct:94,types:'INTP・ENTP'},{stone:'amethyst',pct:82,types:'INFJ・INFP'}],
-    message:'INTJの戦略的な思考と、ラブラドライトの多次元的なエネルギーは、唯一無二の組み合わせ。\n\n光の角度で色が変わるこの石のように、あなたの思考も一つの視点に留まりません。\n\n大きなビジョンを持ちながら、細部まで設計できる。そんなあなたの才能を最大限に引き出します。',
-    reason:'戦略的思考と創造性を兼ね備えるタイプに、多次元的なエネルギーが共鳴するため'},
-  moonstone:{name:'ムーンストーン',nameEn:'MOONSTONE',icon:'🌙',rarity:9.4,traits:['優しさの増幅','感情の安定','直感と受容','女性性の開花'],chakra:'第2チャクラ',
-    compat:[{stone:'rose',pct:94,types:'INFP・ENFP'},{stone:'amethyst',pct:88,types:'INFJ・ISFJ'}],
-    message:'ISFJの献身的な愛と、ムーンストーンの月のエネルギーは、深い安らぎを生み出します。\n\n周りを支え続けるあなた自身を、この石が静かに支えます。\n\n感情の波を穏やかに整え、直感力を高め、「自分のための時間」の大切さを教えてくれます。',
-    reason:'献身的で他者中心になりがちなタイプに、自分自身を大切にする力を与えるため'},
-  sunstone:{name:'サンストーン',nameEn:'SUNSTONE',icon:'☀️',rarity:7.8,traits:['輝くカリスマ性','ポジティブエネルギー','自由な表現力','冒険心の増幅'],chakra:'第2・第3チャクラ',
-    compat:[{stone:'citrine',pct:91,types:'ENTP・ESTP'},{stone:'rose',pct:83,types:'ENFJ・ESFJ'}],
-    message:'太陽のように周りを照らすあなたに、サンストーンはさらなる輝きを与えます。\n\nENFPの無限の好奇心と、この石の生命エネルギーが共鳴すると、あなたの周りに人が集まり、奇跡のような出会いが次々と起きます。\n\n自由に、大胆に、あなたらしく。',
-    reason:'太陽のような明るさを持つタイプに、さらなるカリスマ性とエネルギーを与えるため'},
+  intuition:{name:'ラピスラズリ',nameEn:'LAPIS LAZULI',icon:'💎',rarity:5.2,price:9800,traits:['天空の叡智','第三の眼の覚醒','真実の透視','宇宙意識の拡張'],chakra:'第6チャクラ',
+    compat:[{stone:'heal',pct:94,types:'INFJ・INFP'},{stone:'transform',pct:88,types:'INTP・ISFP'}],
+    message:'紀元前3000年——エジプトのファラオ・ツタンカーメンの黄金の棺には、この青い石が散りばめられていた。\n\n「天空の破片」と呼ばれたラピスラズリは、古代から王族と神官だけが持つことを許された叡智の石。\n\nあなたの内なる直感——まだ言語化できない「何か」を感じ取る力を、この石は3000年の時を超えて覚醒させる。\n\n目を閉じて。あなたの第三の眼が、今、開こうとしている。',
+    reason:'INTJの深い洞察力と戦略的思考に、ラピスラズリの叡智のエネルギーが完全に共鳴するため'},
+  love:{name:'ラリマー',nameEn:'LARIMAR',icon:'🩵',rarity:3.8,price:12800,traits:['無条件の愛','魂の浄化','カリブの癒し','感情の解放'],chakra:'第4・第5チャクラ',
+    compat:[{stone:'balance',pct:95,types:'ISFP・ENFJ'},{stone:'heal',pct:89,types:'INFJ・INFP'}],
+    message:'カリブ海に浮かぶドミニカ共和国。その火山の奥深くでしか採れない、世界三大ヒーリングストーンの一つ。\n\nラリマーの透き通るブルーは「カリブ海を閉じ込めた石」と呼ばれ、見る者の心を一瞬で溶かす。\n\n愛に傷ついたことがある人、人を信じることに疲れた人——この石はあなたの心の奥にある「愛したい」という本能を、もう一度目覚めさせる。\n\n世界でここだけの石が、あなたのためだけに輝いている。',
+    reason:'深い共感力と他者への愛情を持つタイプに、ラリマーの無条件の愛が共鳴するため'},
+  wealth:{name:'ルチルクォーツ',nameEn:'RUTILATED QUARTZ',icon:'✨',rarity:6.5,price:12800,traits:['金運の極大化','財の引き寄せ','勝負運の覚醒','豊穣のエネルギー'],chakra:'第3チャクラ',
+    compat:[{stone:'action',pct:93,types:'ENTJ・ISTP'},{stone:'protect',pct:86,types:'ISTJ・ISFJ'}],
+    message:'透明な水晶の中に、金色の針が無数に走る——それがルチルクォーツ。\n\n中国では「金銭石」と呼ばれ、華僑の大富豪たちが必ず身につける「金運最強の石」として知られる。\n\n偶然ではない。この石を持つ者の元に、不思議とチャンスが集まり、決断が冴え、お金の流れが変わり始める。\n\nあなたの中に眠る「稼ぐ才能」を、金の針が貫いて目覚めさせる。',
+    reason:'目標達成力と実行力に優れるタイプに、ルチルクォーツの財運エネルギーが加速をもたらすため'},
+  protect:{name:'翡翠',nameEn:'JADEITE',icon:'🟢',rarity:7.3,price:12800,traits:['守護と結界','魔除けの聖石','長寿と繁栄','不動の安定'],chakra:'第4チャクラ',
+    compat:[{stone:'wealth',pct:91,types:'ESTJ・ESTP'},{stone:'balance',pct:85,types:'ISFJ・ESFJ'}],
+    message:'日本の「国石」にして、中国では5000年間「金よりも価値がある」とされてきた聖なる石。\n\n翡翠は持ち主を選ぶ——あなたに必要な守護を、この石は静かに、しかし絶対的な力で与える。\n\n災いを退け、人間関係の毒を浄化し、あなたの大切な人と場所を見えない結界で守り続ける。\n\n何千年もの間、王と賢者が信じた守護の力が、今あなたの手の中に。',
+    reason:'責任感が強く大切なものを守りたいタイプに、翡翠の絶対的守護力が呼応するため'},
+  transform:{name:'ラブラドライト',nameEn:'LABRADORITE',icon:'🌌',rarity:4.7,price:9800,traits:['変容と覚醒','多次元の扉','創造性の爆発','直感と論理の融合'],chakra:'第6チャクラ',
+    compat:[{stone:'intuition',pct:92,types:'INTJ・INTP'},{stone:'create',pct:87,types:'ENFP・ENTP'}],
+    message:'光の角度を変えた瞬間、石の内部に虹色の炎が走る——ラブラドレッセンス。\n\nこの神秘的な光学現象を持つラブラドライトは、「変容の石」と呼ばれる。今の自分から次の自分へ。\n\n人生の転換期にいる人、何かを変えたいけど怖い人——この石はあなたの中の「もう一人の自分」を呼び覚ます。\n\n蝶が蛹を破るように、あなたの変容は、もう始まっている。',
+    reason:'多面的な思考と変化を求めるタイプに、ラブラドライトの変容エネルギーが強く共鳴するため'},
+  action:{name:'サンストーン',nameEn:'SUNSTONE',icon:'☀️',rarity:5.9,price:9800,traits:['太陽の意志力','決断と実行','リーダーの覇気','冒険心の点火'],chakra:'第2・第3チャクラ',
+    compat:[{stone:'wealth',pct:90,types:'ESTJ・ESTP'},{stone:'create',pct:84,types:'ENFP・ESFP'}],
+    message:'1000年前、ヴァイキングは曇天の大西洋を渡るとき、この石を空にかざして太陽の位置を知った。\n\nサンストーン——「太陽の羅針盤」と呼ばれた伝説の航海石は、迷いを断ち切り、進むべき方向を示す。\n\nあなたの中にある「やりたいこと」。でも踏み出せない一歩。この石が背中を押すのではなく、あなた自身の太陽を灯す。\n\n迷いの霧を、あなたの内なる太陽が焼き払う。',
+    reason:'行動力と決断力を武器にするタイプに、サンストーンの太陽エネルギーがさらなる推進力を与えるため'},
+  heal:{name:'スギライト',nameEn:'SUGILITE',icon:'💜',rarity:3.2,price:12800,traits:['魂の深層浄化','霊的覚醒','究極の癒し','精神世界の扉'],chakra:'第7チャクラ',
+    compat:[{stone:'intuition',pct:96,types:'INTJ・INTP'},{stone:'love',pct:88,types:'INFP・ESFJ'}],
+    message:'1944年、日本人鉱物学者・杉健一が瀬戸内海の岩城島で発見した、世界三大ヒーリングストーンの一つ。\n\nスギライトの深い紫は「20世紀最大の発見」と呼ばれ、持つ者の魂を最も深いレベルで浄化する。\n\n日本人が見つけた石が、今、日本人のあなたの元に還ってきた——それは偶然ではない。\n\n心の傷、過去のトラウマ、見えない疲れ。すべてをこの紫の光が、静かに溶かしていく。',
+    reason:'繊細な感受性と深い精神世界を持つタイプに、スギライトの究極の浄化力が魂レベルで共鳴するため'},
+  balance:{name:'ムーンストーン',nameEn:'MOONSTONE',icon:'🌙',rarity:8.4,price:9800,traits:['月の女神の祝福','陰陽の調和','感情の安定','女性性の覚醒'],chakra:'第2チャクラ',
+    compat:[{stone:'love',pct:93,types:'INFP・ESFJ'},{stone:'heal',pct:86,types:'INFJ・ISFJ'}],
+    message:'古代ローマ人は、この石の中に月の女神ダイアナが宿ると信じた。\n\nムーンストーンの内部で揺らめく青白い光——「シラー効果」は、月光そのものを閉じ込めたかのよう。\n\n頑張りすぎる人、バランスを崩しがちな人——月の満ち欠けのように、あなたにも「満ちる時」と「休む時」がある。\n\nこの石は、あなたが忘れかけていた「自分を満たす」という本能を、静かに呼び覚ます。',
+    reason:'調和とバランスを大切にするタイプに、ムーンストーンの陰陽調和エネルギーが深く響くため'},
+  create:{name:'カーネリアン',nameEn:'CARNELIAN',icon:'🔥',rarity:12.0,price:9800,traits:['創造の炎','勇気の覚醒','生命力の爆発','情熱のエンジン'],chakra:'第1・第2チャクラ',
+    compat:[{stone:'transform',pct:89,types:'INTP・ISFP'},{stone:'action',pct:83,types:'ENTJ・ISTP'}],
+    message:'ナポレオン・ボナパルトは、エジプト遠征で手に入れた八角形のカーネリアンを終生手放さなかった。\n\n古代エジプトでは「夕陽の石」と呼ばれ、創造神ラーの力が宿ると信じられたこの石は、持つ者に「創る力」と「立ち向かう勇気」を与える。\n\nアイデアはあるのに形にできない。やりたいことはあるのに踏み出せない——その壁を、この石の炎が溶かす。\n\nナポレオンが世界を変えたように、あなたの創造力が、今ここから動き出す。',
+    reason:'創造性と好奇心に溢れるタイプに、カーネリアンの情熱と創造のエネルギーが点火するため'},
 };
 
 const mbtiQuestions = [
@@ -585,19 +585,19 @@ const stoneQuestions = [
       {icon:"🛡️",text:"守り・安定",sub:"ネガティブから自分を守りたい",scores:{protect:3}},
       {icon:"💡",text:"直感・洞察",sub:"本質を見抜く力が欲しい",scores:{intuition:3}},
       {icon:"❤️",text:"愛・繋がり",sub:"人間関係を豊かにしたい",scores:{love:3}},
-      {icon:"⚡",text:"行動力・決断力",sub:"迷いを断ち切りたい",scores:{power:3}}
+      {icon:"⚡",text:"行動力・決断力",sub:"迷いを断ち切りたい",scores:{action:3}}
     ]},
   {title:"最近のあなたの状態は？",sub:"正直に",
     options:[
       {icon:"😔",text:"ちょっと疲れてる",sub:"癒しが必要かも",scores:{heal:3}},
       {icon:"🔥",text:"変わりたい衝動がある",sub:"何か大きな変化を求めてる",scores:{transform:3}},
       {icon:"💰",text:"もっと豊かになりたい",sub:"金運・成功運が欲しい",scores:{wealth:3}},
-      {icon:"😌",text:"わりと安定してる",sub:"さらに上を目指したい",scores:{power:2,intuition:1}}
+      {icon:"😌",text:"わりと安定してる",sub:"さらに上を目指したい",scores:{action:2,intuition:1}}
     ]},
   {title:"惹かれる色は？",sub:"今の気分で",
     options:[
       {icon:"💜",text:"紫・ラベンダー",sub:"神秘・癒し",scores:{heal:2,intuition:1}},
-      {icon:"💛",text:"金・イエロー",sub:"豊かさ・自信",scores:{wealth:2,power:1}},
+      {icon:"💛",text:"金・イエロー",sub:"豊かさ・自信",scores:{wealth:2,action:1}},
       {icon:"🖤",text:"黒・ダーク",sub:"守護・強さ",scores:{protect:2,transform:1}},
       {icon:"💗",text:"ピンク・ローズ",sub:"愛・優しさ",scores:{love:2,heal:1}}
     ]},
@@ -606,7 +606,7 @@ const stoneQuestions = [
 let selectedMBTI = null;
 let currentQ = 0;
 let mbtiScores = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-let stoneScores = {protect:0,intuition:0,love:0,power:0,heal:0,transform:0,wealth:0};
+let stoneScores = {protect:0,intuition:0,love:0,action:0,heal:0,transform:0,wealth:0,balance:0,create:0};
 let resultStoneKey = '';
 let mode = '';
 let userName = '';
@@ -672,7 +672,7 @@ function startKnown() {
   userName = document.getElementById('nickname-input').value.trim() || 'あなた';
   mode='known';
   currentQ=0;
-  stoneScores={protect:0,intuition:0,love:0,power:0,heal:0,transform:0,wealth:0};
+  stoneScores={protect:0,intuition:0,love:0,action:0,heal:0,transform:0,wealth:0,balance:0,create:0};
   showStoneQuestion();
 }
 
@@ -705,7 +705,7 @@ function startUnknown() {
   mode='unknown';
   currentQ=0;
   mbtiScores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-  stoneScores={protect:0,intuition:0,love:0,power:0,heal:0,transform:0,wealth:0};
+  stoneScores={protect:0,intuition:0,love:0,action:0,heal:0,transform:0,wealth:0,balance:0,create:0};
   showMBTIQuestion();
 }
 
@@ -883,7 +883,7 @@ function showLoading(){
 
 // ======== Result ========
 function showResult(){
-  const baseStoneKey = mbtiStoneMap[selectedMBTI] || 'amethyst';
+  const baseStoneKey = mbtiStoneMap[selectedMBTI] || 'intuition';
   resultStoneKey = baseStoneKey;
   
   const stone=stones[resultStoneKey];
