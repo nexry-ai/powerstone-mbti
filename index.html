@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBTI × パワーストーン診断 | あなたの性格タイプが求める石</title>
+<meta property="og:title" content="MBTI × パワーストーン診断 💎">
+<meta property="og:description" content="あなたのMBTIタイプに最適なパワーストーンを診断。16タイプ別の運命の石を見つけよう。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@400;600;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#111118;--card:#1A1A24;--border:rgba(255,255,255,0.08);
+    --text:#E4E4EC;--sub:rgba(255,255,255,0.5);
+    --mint:#34D399;--purple:#A78BFA;--pink:#F472B6;--blue:#60A5FA;--gold:#FBBF24;
+    --accent:var(--purple);
+  }
+  body{font-family:'Noto Sans JP','Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+  body::before{
+    content:'';position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;pointer-events:none;
+    background:radial-gradient(ellipse at 20% 50%,rgba(167,139,250,0.06),transparent 70%),
+               radial-gradient(ellipse at 80% 20%,rgba(52,211,153,0.04),transparent 60%),
+               radial-gradient(ellipse at 50% 80%,rgba(244,114,182,0.04),transparent 60%);
+  }
+  .container{max-width:480px;margin:0 auto;padding:20px;position:relative;z-index:1}
+  
+  .screen{display:none;animation:fadeIn 0.4s ease}.screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Header */
+  .header{text-align:center;padding:36px 0 20px}
+  .header-badge{display:inline-block;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.2);border-radius:20px;padding:4px 14px;font-size:11px;color:var(--purple);letter-spacing:1px;margin-bottom:12px}
+  .header h1{font-family:'Inter','Noto Sans JP',sans-serif;font-size:26px;font-weight:900;margin-bottom:4px;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .header .subtitle{font-size:14px;color:var(--sub);margin-bottom:16px}
+  .header p{font-size:14px;color:var(--text);line-height:1.8;opacity:0.8}
+
+  /* MBTI selector */
+  .mbti-section{margin-top:24px}
+  .mbti-label{font-size:15px;font-weight:700;color:var(--text);text-align:center;margin-bottom:16px}
+  .mbti-tabs{display:flex;gap:6px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+  .mbti-tab{
+    padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
+    background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--sub);transition:all 0.2s;
+  }
+  .mbti-tab.active{background:rgba(167,139,250,0.15);border-color:var(--purple);color:var(--purple)}
+  .mbti-tab:hover{border-color:rgba(167,139,250,0.4)}
+
+  .mbti-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+  .mbti-type{
+    padding:12px 4px;border-radius:10px;text-align:center;cursor:pointer;
+    background:rgba(255,255,255,0.03);border:1px solid var(--border);transition:all 0.2s;
+  }
+  .mbti-type:hover{border-color:rgba(167,139,250,0.4);background:rgba(167,139,250,0.06)}
+  .mbti-type.selected{border-color:var(--accent);background:rgba(167,139,250,0.12)}
+  .mbti-type .type-code{font-family:'Inter',sans-serif;font-size:15px;font-weight:900;color:var(--text)}
+  .mbti-type .type-name{font-size:10px;color:var(--sub);margin-top:2px}
+  .mbti-type.selected .type-code{color:var(--purple)}
+
+  .or-divider{text-align:center;color:var(--sub);font-size:12px;margin:16px 0;position:relative}
+  .or-divider::before,.or-divider::after{content:'';position:absolute;top:50%;width:35%;height:1px;background:var(--border)}
+  .or-divider::before{left:0}.or-divider::after{right:0}
+
+  .unknown-btn{
+    display:block;width:100%;padding:14px;border-radius:12px;text-align:center;cursor:pointer;
+    background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--sub);
+    font-size:14px;transition:all 0.2s;
+  }
+  .unknown-btn:hover{border-color:var(--pink);color:var(--pink);background:rgba(244,114,182,0.06)}
+
+  .start-btn{
+    display:block;width:100%;margin-top:20px;padding:16px;
+    background:linear-gradient(135deg,var(--purple),var(--pink));
+    color:white;font-size:16px;font-weight:700;border-radius:14px;border:none;
+    cursor:pointer;transition:all 0.3s;box-shadow:0 4px 20px rgba(167,139,250,0.3);
+  }
+  .start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(167,139,250,0.4)}
+  .start-btn:disabled{opacity:0.3;cursor:not-allowed;transform:none;box-shadow:none}
+
+  /* Progress */
+  .progress-bar{width:100%;height:3px;background:rgba(255,255,255,0.06);border-radius:3px;margin-bottom:28px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:3px;transition:width 0.5s}
+  .progress-text{text-align:center;font-size:12px;color:var(--sub);margin-bottom:8px}
+
+  /* Questions (for unknown MBTI) */
+  .question-title{font-size:17px;font-weight:700;text-align:center;margin-bottom:6px;line-height:1.6;white-space:pre-line}
+  .question-sub{font-size:12px;text-align:center;color:var(--sub);margin-bottom:20px}
+  .options{display:flex;flex-direction:column;gap:10px}
+  .option{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:16px 18px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:14px;
+  }
+  .option:hover{border-color:rgba(167,139,250,0.4);background:rgba(167,139,250,0.06);transform:translateX(4px)}
+  .option:active{transform:scale(0.98)}
+  .option-icon{font-size:22px;flex-shrink:0}
+  .option-text{font-size:14px;line-height:1.5}
+  .option-text small{display:block;font-size:11px;color:var(--sub);margin-top:2px}
+
+  /* Stone question (for known MBTI) */
+  .stone-q-title{font-size:16px;font-weight:700;text-align:center;margin-bottom:6px;line-height:1.6;white-space:pre-line;color:var(--purple)}
+  .stone-q-sub{font-size:12px;text-align:center;color:var(--sub);margin-bottom:20px}
+
+  /* Loading */
+  .loading{text-align:center;padding:60px 0}
+  .loading-bars{display:flex;gap:6px;justify-content:center;margin-bottom:24px;height:40px;align-items:end}
+  .loading-bar{width:6px;border-radius:3px;background:var(--purple);animation:bars 1s ease-in-out infinite}
+  .loading-bar:nth-child(1){height:20px;animation-delay:0s}
+  .loading-bar:nth-child(2){height:30px;animation-delay:0.1s}
+  .loading-bar:nth-child(3){height:40px;animation-delay:0.2s}
+  .loading-bar:nth-child(4){height:30px;animation-delay:0.3s}
+  .loading-bar:nth-child(5){height:20px;animation-delay:0.4s}
+  @keyframes bars{0%,100%{opacity:0.3;transform:scaleY(0.5)}50%{opacity:1;transform:scaleY(1)}}
+  .loading p{font-size:14px;color:var(--sub);animation:fadeInOut 2s ease-in-out infinite}
+  @keyframes fadeInOut{0%,100%{opacity:0.4}50%{opacity:1}}
+
+  /* Result */
+  .result-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px 22px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+  .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--pink),var(--mint))}
+  .result-mbti-badge{display:inline-block;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.25);border-radius:8px;padding:4px 12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:900;color:var(--purple);margin-bottom:12px;letter-spacing:1px}
+  .result-stone-icon{font-size:56px;margin-bottom:10px;animation:float 3s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .result-label{font-size:11px;color:var(--sub);letter-spacing:3px;margin-bottom:6px}
+  .result-name{font-size:26px;font-weight:900;margin-bottom:2px;background:linear-gradient(135deg,var(--gold),#FDE68A);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .result-name-en{font-size:12px;color:var(--sub);margin-bottom:14px;letter-spacing:2px}
+  .rarity-badge{display:inline-block;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.25);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--gold);margin-bottom:16px}
+  .rarity-badge strong{color:#FDE68A}
+  .result-traits{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px}
+  .trait-tag{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);border-radius:16px;padding:5px 12px;font-size:11px;color:var(--purple)}
+  .result-reason{font-size:13px;color:var(--sub);line-height:1.8;text-align:left;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+  .message-preview{position:relative;margin-top:16px;padding:16px;background:rgba(255,255,255,0.02);border-radius:10px}
+  .message-blurred{font-size:13px;line-height:2;filter:blur(5px);user-select:none;pointer-events:none}
+  .message-overlay{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(17,17,24,0.4);border-radius:10px}
+  .message-overlay .lock-icon{font-size:20px;margin-bottom:6px}
+  .message-overlay p{font-size:13px;font-weight:700;color:var(--purple)}
+  .message-overlay small{font-size:11px;color:var(--sub)}
+
+  /* MBTI insight */
+  .mbti-insight{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px;text-align:center}
+  .mbti-insight h3{font-size:14px;font-weight:700;color:var(--purple);margin-bottom:10px}
+  .mbti-insight p{font-size:13px;color:var(--sub);line-height:1.8}
+  .mbti-insight .type-highlight{color:var(--pink);font-weight:700}
+
+  /* Compat */
+  .compat-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px;text-align:center}
+  .compat-section h3{font-size:14px;font-weight:700;color:var(--mint);margin-bottom:12px}
+  .compat-row{display:flex;justify-content:center;gap:20px;margin-bottom:8px}
+  .compat-item{text-align:center}
+  .compat-item .stone-mini{font-size:28px}
+  .compat-item .compat-label{font-size:11px;color:var(--sub);margin-top:4px}
+  .compat-item .compat-types{font-family:'Inter',sans-serif;font-size:10px;color:var(--purple);font-weight:700;margin-top:2px}
+  .compat-item .compat-pct{font-size:13px;color:var(--mint);font-weight:700}
+  .compat-note{font-size:11px;color:var(--sub);margin-top:8px}
+
+  /* CTA */
+  .cta-section{background:linear-gradient(145deg,rgba(167,139,250,0.06),rgba(244,114,182,0.06));border:1px solid rgba(167,139,250,0.15);border-radius:16px;padding:22px;text-align:center;margin-bottom:16px}
+  .cta-section h3{font-size:16px;font-weight:700;margin-bottom:10px;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.6}
+  .cta-benefits{text-align:left;margin:14px 0}
+  .cta-benefits li{font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:7px;list-style:none;padding-left:22px;position:relative;line-height:1.6}
+  .cta-benefits li::before{content:'✓';position:absolute;left:0;color:var(--mint);font-weight:700}
+  .cta-button{
+    display:inline-block;background:#06C755;color:white;font-size:16px;font-weight:700;
+    padding:15px 40px;border-radius:14px;text-decoration:none;transition:all 0.3s;
+    box-shadow:0 4px 15px rgba(6,199,85,0.3);animation:ctaPulse 2s ease-in-out infinite;
+  }
+  @keyframes ctaPulse{0%,100%{box-shadow:0 4px 15px rgba(6,199,85,0.3)}50%{box-shadow:0 4px 25px rgba(6,199,85,0.5)}}
+  .cta-button:hover{transform:translateY(-2px)}
+  .cta-sub{font-size:11px;color:var(--sub);margin-top:10px}
+  .cta-urgency{font-size:12px;color:#F87171;margin-top:8px}
+
+  /* Share */
+  .share-section{text-align:center;margin-bottom:36px}
+  .share-section>p{font-size:14px;color:var(--text);margin-bottom:4px}
+  .share-sub{font-size:12px;color:var(--sub);margin-bottom:14px}
+  .share-card-preview{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;margin-bottom:12px}
+  .share-card-preview .sc-mbti{font-family:'Inter',sans-serif;font-size:13px;font-weight:900;color:var(--purple);letter-spacing:1px;margin-bottom:4px}
+  .share-card-preview .sc-icon{font-size:36px;margin-bottom:6px}
+  .share-card-preview .sc-label{font-size:10px;color:var(--sub);letter-spacing:2px}
+  .share-card-preview .sc-name{font-size:20px;font-weight:900;color:var(--gold);margin:4px 0}
+  .share-card-preview .sc-rarity{font-size:11px;color:var(--gold);margin-bottom:8px}
+  .share-card-preview .sc-traits{font-size:11px;color:var(--purple);line-height:1.8}
+  .share-card-preview .sc-url{font-size:10px;color:var(--sub);margin-top:10px}
+  .save-card-btn{display:inline-block;padding:10px 18px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;cursor:pointer;transition:all 0.3s;margin-bottom:14px}
+  .save-card-btn:hover{background:rgba(255,255,255,0.1)}
+  .share-buttons{display:flex;gap:14px;justify-content:center;margin-bottom:14px}
+  .share-btn-label{text-align:center}
+  .share-btn-label span{display:block;font-size:10px;color:var(--sub);margin-top:4px}
+  .share-btn{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;transition:transform 0.2s;cursor:pointer;color:white}
+  .share-btn:hover{transform:scale(1.1)}
+  .share-btn.twitter{background:#000;border:1px solid rgba(255,255,255,0.15)}
+  .share-btn.line-share{background:#06C755}
+  .share-btn.threads{background:#000;border:1px solid rgba(255,255,255,0.15)}
+  .share-btn.instagram{background:linear-gradient(135deg,#833AB4,#FD1D1D,#F77737)}
+  .retry-btn{display:inline-block;margin-top:14px;padding:10px 22px;border:1px solid var(--border);border-radius:8px;color:var(--sub);font-size:13px;cursor:pointer;background:transparent;transition:all 0.3s}
+  .retry-btn:hover{border-color:var(--purple);color:var(--purple)}
+  .footer{text-align:center;padding:16px;font-size:11px;color:rgba(255,255,255,0.15)}
+  #shareCanvas{display:none}
+</style>
+</head>
+<body>
+<canvas id="shareCanvas" width="1080" height="1080"></canvas>
+<div class="container">
+
+<!-- START -->
+<div class="screen active" id="screen-start">
+  <div class="header">
+    <div class="header-badge">MBTI × POWER STONE</div>
+    <h1>MBTI パワーストーン診断</h1>
+    <p class="subtitle">あなたの性格タイプが求める運命の石</p>
+    <div style="margin-top:12px"><p>16タイプの性格特性を分析し<br>あなたに最適なパワーストーンを導きます</p></div>
+  </div>
+  <div class="mbti-section">
+    <div class="mbti-label">💎 あなたのMBTIタイプは？</div>
+    <div class="mbti-tabs">
+      <div class="mbti-tab active" onclick="filterTypes('all',this)">全て</div>
+      <div class="mbti-tab" onclick="filterTypes('analyst',this)">分析家</div>
+      <div class="mbti-tab" onclick="filterTypes('diplomat',this)">外交官</div>
+      <div class="mbti-tab" onclick="filterTypes('sentinel',this)">番人</div>
+      <div class="mbti-tab" onclick="filterTypes('explorer',this)">探検家</div>
+    </div>
+    <div class="mbti-grid" id="mbti-grid"></div>
+    <div class="or-divider">または</div>
+    <div class="unknown-btn" onclick="startUnknown()">MBTIがわからない → 質問で診断する</div>
+    <button class="start-btn" id="start-btn" disabled onclick="startKnown()">この石タイプを診断する 💎</button>
+  </div>
+  <p style="text-align:center;font-size:11px;color:var(--sub);margin-top:24px">累計 <span style="color:var(--purple)" id="total-count">18,291</span>人 が診断済み</p>
+</div>
+
+<!-- QUESTION (for unknown MBTI) -->
+<div class="screen" id="screen-question">
+  <div class="progress-text" id="progress-text"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-title" id="question-title"></div>
+  <div class="question-sub" id="question-sub"></div>
+  <div class="options" id="options"></div>
+</div>
+
+<!-- STONE QUESTION (for known MBTI — deeper personalization) -->
+<div class="screen" id="screen-stone-q">
+  <div class="progress-text" id="sq-progress-text"></div>
+  <div class="progress-bar"><div class="progress-fill" id="sq-progress-fill"></div></div>
+  <div class="stone-q-title" id="sq-title"></div>
+  <div class="stone-q-sub" id="sq-sub"></div>
+  <div class="options" id="sq-options"></div>
+</div>
+
+<!-- LOADING -->
+<div class="screen" id="screen-loading">
+  <div class="loading">
+    <div class="loading-bars"><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div></div>
+    <p id="loading-text">MBTIプロファイルを解析中...</p>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="screen-result">
+  <div class="result-card" id="result-card"></div>
+  <div class="mbti-insight" id="mbti-insight"></div>
+  <div class="compat-section" id="compat-section"></div>
+  <div class="cta-section">
+    <h3>🔓 あなた専用の<br>MBTI×ストーン鑑定書</h3>
+    <ul class="cta-benefits">
+      <li>性格タイプ別の詳細メッセージ全文</li>
+      <li>あなたのMBTI×石の相性レポート</li>
+      <li>弱点を補うサブストーン3選</li>
+      <li>タイプ別・開運の過ごし方</li>
+      <li>相性の良いMBTIタイプ情報</li>
+    </ul>
+    <a href="#" class="cta-button" id="line-cta">📱 LINEで鑑定書を受け取る</a>
+    <p class="cta-sub">無料・30秒で完了・いつでもブロックOK</p>
+    <p class="cta-urgency">🔥 本日あと <strong id="slots-left">19</strong>名 限定</p>
+  </div>
+  <div class="share-section">
+    <p>💎 あなたのタイプをシェアしよう</p>
+    <p class="share-sub">同じMBTIの人、相性の良いタイプの人を見つけて</p>
+    <div class="share-card-preview" id="share-card-preview"></div>
+    <button class="save-card-btn" onclick="saveShareImage()">📷 結果画像を保存</button>
+    <div class="share-buttons">
+      <div class="share-btn-label"><a class="share-btn twitter" id="share-x" target="_blank">𝕏</a><span>X</span></div>
+      <div class="share-btn-label"><a class="share-btn line-share" id="share-line" target="_blank">L</a><span>LINE</span></div>
+      <div class="share-btn-label"><a class="share-btn threads" onclick="shareThreads()">🔗</a><span>Threads</span></div>
+      <div class="share-btn-label"><a class="share-btn instagram" onclick="shareIG()">📸</a><span>ストーリー</span></div>
+    </div>
+    <button class="retry-btn" onclick="retry()">もう一度診断する</button>
+  </div>
+</div>
+
+</div>
+<div class="footer">© MBTI × パワーストーン診断</div>
+
+<script>
+const LINE_URL='#'; // TODO
+
+const mbtiTypes = [
+  {code:'INTJ',name:'建築家',group:'analyst',color:'#A78BFA'},
+  {code:'INTP',name:'論理学者',group:'analyst',color:'#A78BFA'},
+  {code:'ENTJ',name:'指揮官',group:'analyst',color:'#A78BFA'},
+  {code:'ENTP',name:'討論者',group:'analyst',color:'#A78BFA'},
+  {code:'INFJ',name:'提唱者',group:'diplomat',color:'#34D399'},
+  {code:'INFP',name:'仲介者',group:'diplomat',color:'#34D399'},
+  {code:'ENFJ',name:'主人公',group:'diplomat',color:'#34D399'},
+  {code:'ENFP',name:'広報運動家',group:'diplomat',color:'#34D399'},
+  {code:'ISTJ',name:'管理者',group:'sentinel',color:'#60A5FA'},
+  {code:'ISFJ',name:'擁護者',group:'sentinel',color:'#60A5FA'},
+  {code:'ESTJ',name:'幹部',group:'sentinel',color:'#60A5FA'},
+  {code:'ESFJ',name:'領事官',group:'sentinel',color:'#60A5FA'},
+  {code:'ISTP',name:'巨匠',group:'explorer',color:'#FBBF24'},
+  {code:'ISFP',name:'冒険家',group:'explorer',color:'#FBBF24'},
+  {code:'ESTP',name:'起業家',group:'explorer',color:'#FBBF24'},
+  {code:'ESFP',name:'エンターテイナー',group:'explorer',color:'#FBBF24'},
+];
+
+// MBTI → stone mapping
+const mbtiStoneMap = {
+  INTJ:'labradorite', INTP:'lapis', ENTJ:'tiger', ENTP:'citrine',
+  INFJ:'amethyst', INFP:'rose', ENFJ:'rose', ENFP:'sunstone',
+  ISTJ:'obsidian', ISFJ:'moonstone', ESTJ:'tiger', ESFJ:'rose',
+  ISTP:'obsidian', ISFP:'labradorite', ESTP:'citrine', ESFP:'sunstone',
+};
+
+const stones = {
+  lapis:{name:'ラピスラズリ',nameEn:'LAPIS LAZULI',icon:'💎',rarity:8.3,traits:['知的探究心の強化','真実を見抜く直感','独自の世界観','深い内省力'],chakra:'第6チャクラ',
+    compat:[{stone:'amethyst',pct:95,types:'INFJ・INFP'},{stone:'labradorite',pct:88,types:'INTJ・ISFP'}],
+    message:'INTPの論理的思考とラピスラズリの「真実の石」としての力は、最高の相性。\n\nあなたの強みである分析力をさらに研ぎ澄まし、複雑な問題の本質を見抜く力を増幅させます。\n\n内向的なあなたが、自分の世界で深く思考する時間を、この石はさらに豊かにしてくれます。',
+    reason:'INTPの「知りたい」という根源的欲求に、ラピスラズリの叡智のエネルギーが共鳴するため'},
+  rose:{name:'ローズクォーツ',nameEn:'ROSE QUARTZ',icon:'🌹',rarity:18.2,traits:['共感力の増幅','人間関係の調和','自己受容','心の癒し'],chakra:'第4チャクラ',
+    compat:[{stone:'amethyst',pct:97,types:'INFJ・ISFJ'},{stone:'lapis',pct:85,types:'INTP・INTJ'}],
+    message:'あなたの高い共感力と人を思いやる心は、ローズクォーツのエネルギーと深く共鳴します。\n\n他者のために尽くしすぎて疲れてしまうあなたを、この石は優しく守ります。\n\n「自分を愛することは、人を愛すること」。そのバランスをこの石が教えてくれます。',
+    reason:'他者への献身が強いタイプだからこそ、自己愛を補うローズクォーツが必要'},
+  citrine:{name:'シトリン',nameEn:'CITRINE',icon:'🔶',rarity:14.5,traits:['アイデアの具現化','金運・成功運','ポジティブ思考','挑戦する勇気'],chakra:'第3チャクラ',
+    compat:[{stone:'tiger',pct:92,types:'ENTJ・ESTJ'},{stone:'labradorite',pct:84,types:'ENTP・ISFP'}],
+    message:'次々と湧き出るアイデアを、現実の成果に変える力。それがシトリンがあなたに与えるギフトです。\n\n発想力は豊かだけど、実行が追いつかない——そんなあなたの弱点を補い、思考を行動に変えるエネルギーを与えます。\n\n「面白い」を「稼げる」に変える石です。',
+    reason:'発想力に優れるが実行力が課題のタイプに、具現化のエネルギーを与えるため'},
+  tiger:{name:'タイガーアイ',nameEn:"TIGER'S EYE",icon:'🐯',rarity:15.8,traits:['決断力の覚醒','リーダーシップ','目標達成力','揺るがない意志'],chakra:'第3チャクラ',
+    compat:[{stone:'citrine',pct:93,types:'ENTP・ESTP'},{stone:'obsidian',pct:87,types:'ISTJ・ISTP'}],
+    message:'生まれながらのリーダーであるあなたに、タイガーアイはさらなる決断力と実行力を与えます。\n\n目標に向かって一直線に進む力。周囲を巻き込み、導く力。すべてが増幅されます。\n\nただし、この石はあなたに「立ち止まる勇気」も教えてくれます。',
+    reason:'リーダータイプの決断力をさらに研ぎ澄まし、同時に柔軟性も与えるため'},
+  amethyst:{name:'アメジスト',nameEn:'AMETHYST',icon:'💜',rarity:12.1,traits:['深い直感力','精神的な安定','スピリチュアル覚醒','内なる平和'],chakra:'第7チャクラ',
+    compat:[{stone:'rose',pct:96,types:'ENFJ・ESFJ'},{stone:'lapis',pct:89,types:'INTP・INTJ'}],
+    message:'INFJの稀有な直感力と、アメジストの霊的エネルギーは、最も深い共鳴を生み出します。\n\n人の心を読み取りすぎて疲弊するあなたを、この石は静かに浄化し、保護します。\n\n世界で最も希少なMBTIタイプと、最も神聖な石の組み合わせ。それがあなたです。',
+    reason:'最も稀少なINFJタイプの繊細な感受性を、アメジストの浄化力が守るため'},
+  obsidian:{name:'オブシディアン',nameEn:'OBSIDIAN',icon:'🖤',rarity:11.7,traits:['強力な守護','グラウンディング','本質を見抜く力','不要なものを断つ'],chakra:'第1チャクラ',
+    compat:[{stone:'tiger',pct:90,types:'ENTJ・ESTJ'},{stone:'lapis',pct:86,types:'INTP・INTJ'}],
+    message:'現実主義者であるあなたに、オブシディアンは「見えない守護」を与えます。\n\n合理的思考を持つあなたでも、無意識に受けるネガティブなエネルギーは存在します。\n\nこの石は不要な人間関係、不要な感情、不要な執着を鋭く断ち切る力を与えます。',
+    reason:'現実的で堅実なタイプに、目に見えないエネルギーレベルの守護を加えるため'},
+  labradorite:{name:'ラブラドライト',nameEn:'LABRADORITE',icon:'🌌',rarity:6.9,traits:['創造力の爆発','変容と進化','多面的な才能','直感と論理の融合'],chakra:'第6チャクラ',
+    compat:[{stone:'lapis',pct:94,types:'INTP・ENTP'},{stone:'amethyst',pct:82,types:'INFJ・INFP'}],
+    message:'INTJの戦略的な思考と、ラブラドライトの多次元的なエネルギーは、唯一無二の組み合わせ。\n\n光の角度で色が変わるこの石のように、あなたの思考も一つの視点に留まりません。\n\n大きなビジョンを持ちながら、細部まで設計できる。そんなあなたの才能を最大限に引き出します。',
+    reason:'戦略的思考と創造性を兼ね備えるタイプに、多次元的なエネルギーが共鳴するため'},
+  moonstone:{name:'ムーンストーン',nameEn:'MOONSTONE',icon:'🌙',rarity:9.4,traits:['優しさの増幅','感情の安定','直感と受容','女性性の開花'],chakra:'第2チャクラ',
+    compat:[{stone:'rose',pct:94,types:'INFP・ENFP'},{stone:'amethyst',pct:88,types:'INFJ・ISFJ'}],
+    message:'ISFJの献身的な愛と、ムーンストーンの月のエネルギーは、深い安らぎを生み出します。\n\n周りを支え続けるあなた自身を、この石が静かに支えます。\n\n感情の波を穏やかに整え、直感力を高め、「自分のための時間」の大切さを教えてくれます。',
+    reason:'献身的で他者中心になりがちなタイプに、自分自身を大切にする力を与えるため'},
+  sunstone:{name:'サンストーン',nameEn:'SUNSTONE',icon:'☀️',rarity:7.8,traits:['輝くカリスマ性','ポジティブエネルギー','自由な表現力','冒険心の増幅'],chakra:'第2・第3チャクラ',
+    compat:[{stone:'citrine',pct:91,types:'ENTP・ESTP'},{stone:'rose',pct:83,types:'ENFJ・ESFJ'}],
+    message:'太陽のように周りを照らすあなたに、サンストーンはさらなる輝きを与えます。\n\nENFPの無限の好奇心と、この石の生命エネルギーが共鳴すると、あなたの周りに人が集まり、奇跡のような出会いが次々と起きます。\n\n自由に、大胆に、あなたらしく。',
+    reason:'太陽のような明るさを持つタイプに、さらなるカリスマ性とエネルギーを与えるため'},
+};
+
+// MBTI simple questions (4 axes)
+const mbtiQuestions = [
+  {title:"休日の過ごし方、\n理想はどっち？",sub:"エネルギーの充電方法",
+    options:[
+      {icon:"🏠",text:"一人 or 少人数でゆっくり",sub:"静かな時間が最高の充電",scores:{I:1}},
+      {icon:"🎉",text:"友達と外で遊ぶ・イベント",sub:"人と会うとエネルギーが湧く",scores:{E:1}}
+    ]},
+  {title:"新しいことを学ぶとき、\nどっちが好き？",sub:"情報の処理の仕方",
+    options:[
+      {icon:"📊",text:"データや事実を積み上げる",sub:"具体的で確実な情報が好き",scores:{S:1}},
+      {icon:"💡",text:"全体像やコンセプトから入る",sub:"可能性やパターンに惹かれる",scores:{N:1}}
+    ]},
+  {title:"大事な決断をするとき、\n何を重視する？",sub:"判断の基準",
+    options:[
+      {icon:"🧠",text:"論理的に正しいかどうか",sub:"感情より合理性を優先",scores:{T:1}},
+      {icon:"❤️",text:"人の気持ちや影響",sub:"関係者への配慮を優先",scores:{F:1}}
+    ]},
+  {title:"旅行の計画、\nどっちが近い？",sub:"生活のスタイル",
+    options:[
+      {icon:"📋",text:"事前にしっかり計画する",sub:"予定が決まってると安心",scores:{J:1}},
+      {icon:"🎲",text:"その場のノリで決める",sub:"自由に動ける方が楽しい",scores:{P:1}}
+    ]},
+];
+
+// Stone preference questions (after MBTI is known)
+const stoneQuestions = [
+  {title:"今、一番欲しい力は？",sub:"直感で選んで",
+    options:[
+      {icon:"🛡️",text:"守り・安定",sub:"ネガティブから自分を守りたい",scores:{protect:3}},
+      {icon:"💡",text:"直感・洞察",sub:"本質を見抜く力が欲しい",scores:{intuition:3}},
+      {icon:"❤️",text:"愛・繋がり",sub:"人間関係を豊かにしたい",scores:{love:3}},
+      {icon:"⚡",text:"行動力・決断力",sub:"迷いを断ち切りたい",scores:{power:3}}
+    ]},
+  {title:"最近のあなたの状態は？",sub:"正直に",
+    options:[
+      {icon:"😔",text:"ちょっと疲れてる",sub:"癒しが必要かも",scores:{heal:3}},
+      {icon:"🔥",text:"変わりたい衝動がある",sub:"何か大きな変化を求めてる",scores:{transform:3}},
+      {icon:"💰",text:"もっと豊かになりたい",sub:"金運・成功運が欲しい",scores:{wealth:3}},
+      {icon:"😌",text:"わりと安定してる",sub:"さらに上を目指したい",scores:{power:2,intuition:1}}
+    ]},
+  {title:"惹かれる色は？",sub:"今の気分で",
+    options:[
+      {icon:"💜",text:"紫・ラベンダー",sub:"神秘・癒し",scores:{heal:2,intuition:1}},
+      {icon:"💛",text:"金・イエロー",sub:"豊かさ・自信",scores:{wealth:2,power:1}},
+      {icon:"🖤",text:"黒・ダーク",sub:"守護・強さ",scores:{protect:2,transform:1}},
+      {icon:"💗",text:"ピンク・ローズ",sub:"愛・優しさ",scores:{love:2,heal:1}}
+    ]},
+];
+
+let selectedMBTI = null;
+let currentQ = 0;
+let mbtiScores = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+let stoneScores = {protect:0,intuition:0,love:0,power:0,heal:0,transform:0,wealth:0};
+let resultStoneKey = '';
+let mode = ''; // 'known' or 'unknown'
+
+// Build MBTI grid
+const grid = document.getElementById('mbti-grid');
+mbtiTypes.forEach(t => {
+  const div = document.createElement('div');
+  div.className = 'mbti-type';
+  div.dataset.group = t.group;
+  div.innerHTML = `<div class="type-code" style="color:${selectedMBTI===t.code?t.color:''}">${t.code}</div><div class="type-name">${t.name}</div>`;
+  div.onclick = () => selectMBTI(t.code, div);
+  grid.appendChild(div);
+});
+
+function filterTypes(group, tab) {
+  document.querySelectorAll('.mbti-tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.mbti-type').forEach(el => {
+    el.style.display = (group==='all' || el.dataset.group===group) ? '' : 'none';
+  });
+}
+
+function selectMBTI(code, el) {
+  document.querySelectorAll('.mbti-type').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMBTI = code;
+  document.getElementById('start-btn').disabled = false;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const s=document.getElementById(id);s.classList.add('active');
+  s.style.animation='none';s.offsetHeight;s.style.animation='';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// --- Known MBTI flow ---
+function startKnown() {
+  if(!selectedMBTI) return;
+  mode='known';
+  currentQ=0;
+  stoneScores={protect:0,intuition:0,love:0,power:0,heal:0,transform:0,wealth:0};
+  showStoneQuestion();
+}
+
+function showStoneQuestion() {
+  const q=stoneQuestions[currentQ];
+  showScreen('screen-stone-q');
+  document.getElementById('sq-progress-text').textContent=`${currentQ+1} / ${stoneQuestions.length}`;
+  document.getElementById('sq-progress-fill').style.width=`${((currentQ+1)/stoneQuestions.length)*100}%`;
+  document.getElementById('sq-title').textContent=q.title;
+  document.getElementById('sq-sub').textContent=q.sub;
+  const optDiv=document.getElementById('sq-options');
+  optDiv.innerHTML='';
+  q.options.forEach(opt=>{
+    const div=document.createElement('div');div.className='option';
+    div.innerHTML=`<span class="option-icon">${opt.icon}</span><span class="option-text">${opt.text}<small>${opt.sub}</small></span>`;
+    div.onclick=()=>{
+      for(const[k,v]of Object.entries(opt.scores))stoneScores[k]=(stoneScores[k]||0)+v;
+      currentQ++;
+      if(currentQ<stoneQuestions.length)showStoneQuestion();
+      else showLoading();
+    };
+    optDiv.appendChild(div);
+  });
+}
+
+// --- Unknown MBTI flow ---
+function startUnknown() {
+  mode='unknown';
+  currentQ=0;
+  mbtiScores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+  stoneScores={protect:0,intuition:0,love:0,power:0,heal:0,transform:0,wealth:0};
+  showMBTIQuestion();
+}
+
+function showMBTIQuestion() {
+  const totalQ=mbtiQuestions.length+stoneQuestions.length;
+  const qIdx=currentQ;
+  if(qIdx<mbtiQuestions.length){
+    const q=mbtiQuestions[qIdx];
+    showScreen('screen-question');
+    document.getElementById('progress-text').textContent=`${qIdx+1} / ${totalQ}`;
+    document.getElementById('progress-fill').style.width=`${((qIdx+1)/totalQ)*100}%`;
+    document.getElementById('question-title').textContent=q.title;
+    document.getElementById('question-sub').textContent=q.sub;
+    const optDiv=document.getElementById('options');optDiv.innerHTML='';
+    q.options.forEach(opt=>{
+      const div=document.createElement('div');div.className='option';
+      div.innerHTML=`<span class="option-icon">${opt.icon}</span><span class="option-text">${opt.text}<small>${opt.sub}</small></span>`;
+      div.onclick=()=>{
+        for(const[k,v]of Object.entries(opt.scores))mbtiScores[k]=(mbtiScores[k]||0)+v;
+        currentQ++;showMBTIQuestion();
+      };
+      optDiv.appendChild(div);
+    });
+  } else {
+    // Determine MBTI
+    selectedMBTI=(mbtiScores.E>=mbtiScores.I?'E':'I')+(mbtiScores.S>=mbtiScores.N?'S':'N')+(mbtiScores.T>=mbtiScores.F?'T':'F')+(mbtiScores.J>=mbtiScores.P?'J':'P');
+    // Continue to stone questions
+    const sIdx=qIdx-mbtiQuestions.length;
+    if(sIdx<stoneQuestions.length){
+      const q=stoneQuestions[sIdx];
+      showScreen('screen-question');
+      document.getElementById('progress-text').textContent=`${qIdx+1} / ${totalQ}`;
+      document.getElementById('progress-fill').style.width=`${((qIdx+1)/totalQ)*100}%`;
+      document.getElementById('question-title').textContent=q.title;
+      document.getElementById('question-sub').textContent=q.sub;
+      const optDiv=document.getElementById('options');optDiv.innerHTML='';
+      q.options.forEach(opt=>{
+        const div=document.createElement('div');div.className='option';
+        div.innerHTML=`<span class="option-icon">${opt.icon}</span><span class="option-text">${opt.text}<small>${opt.sub}</small></span>`;
+        div.onclick=()=>{
+          for(const[k,v]of Object.entries(opt.scores))stoneScores[k]=(stoneScores[k]||0)+v;
+          currentQ++;showMBTIQuestion();
+        };
+        optDiv.appendChild(div);
+      });
+    } else {
+      showLoading();
+    }
+  }
+}
+
+function showLoading(){
+  showScreen('screen-loading');
+  const typeInfo=mbtiTypes.find(t=>t.code===selectedMBTI)||{name:'あなたのタイプ'};
+  const msgs=[
+    `${selectedMBTI}（${typeInfo.name}）の性格を解析中...`,
+    '性格特性とストーンの相性を計算中...',
+    '16タイプ×9石の組み合わせから最適解を選定...',
+    'あなた専用の鑑定書を作成中...'
+  ];
+  let i=0;
+  const iv=setInterval(()=>{i++;if(i<msgs.length)document.getElementById('loading-text').textContent=msgs[i]},1000);
+  setTimeout(()=>{clearInterval(iv);showResult()},4500);
+}
+
+function showResult(){
+  // Get base stone from MBTI mapping
+  const baseStoneKey = mbtiStoneMap[selectedMBTI] || 'amethyst';
+  
+  // Stone scores can modify the result slightly
+  // But MBTI mapping is primary
+  resultStoneKey = baseStoneKey;
+  
+  const stone=stones[resultStoneKey];
+  const typeInfo=mbtiTypes.find(t=>t.code===selectedMBTI)||{name:'',group:'',color:'#A78BFA'};
+  const groupNames={analyst:'分析家',diplomat:'外交官',sentinel:'番人',explorer:'探検家'};
+  
+  showScreen('screen-result');
+
+  document.getElementById('result-card').innerHTML=`
+    <div class="result-mbti-badge">${selectedMBTI}</div>
+    <div class="result-stone-icon">${stone.icon}</div>
+    <div class="result-label">あなたの性格が求める石</div>
+    <div class="result-name">${stone.name}</div>
+    <div class="result-name-en">${stone.nameEn}</div>
+    <div class="rarity-badge">✨ ${selectedMBTI} × ${stone.name} — 全体の <strong>${stone.rarity}%</strong></div>
+    <div class="result-traits">${stone.traits.map(t=>`<span class="trait-tag">${t}</span>`).join('')}</div>
+    <div class="result-reason">💡 <strong>なぜこの石？</strong><br>${stone.reason}</div>
+    <div class="message-preview">
+      <div class="message-blurred">${stone.message.replace(/\n/g,'<br>')}</div>
+      <div class="message-overlay">
+        <div class="lock-icon">🔒</div>
+        <p>詳細メッセージを読む</p>
+        <small>LINE追加で全文を解放 ↓</small>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('mbti-insight').innerHTML=`
+    <h3>🧠 ${selectedMBTI}（${typeInfo.name}）× ${stone.name}</h3>
+    <p><span class="type-highlight">${selectedMBTI}</span>は${groupNames[typeInfo.group]||''}グループ。<br>
+    ${stone.name}は${selectedMBTI}の<strong>強みを増幅</strong>し、<strong>弱点を補う</strong>最適な組み合わせです。</p>
+  `;
+
+  const compatHtml=stone.compat.map(c=>{
+    const cs=stones[c.stone];
+    return `<div class="compat-item"><div class="stone-mini">${cs.icon}</div><div class="compat-label">${cs.name}</div><div class="compat-types">${c.types}</div><div class="compat-pct">${c.pct}%</div></div>`;
+  }).join('');
+  document.getElementById('compat-section').innerHTML=`
+    <h3>💫 相性の良い石タイプ（MBTIペア）</h3>
+    <div class="compat-row">${compatHtml}</div>
+    <div class="compat-note">これらのMBTIタイプの人と一緒に持つと効果UP</div>
+  `;
+
+  document.getElementById('line-cta').href=`${LINE_URL}?result=${resultStoneKey}&mbti=${selectedMBTI}`;
+  document.getElementById('slots-left').textContent=Math.floor(Math.random()*15)+10;
+
+  document.getElementById('share-card-preview').innerHTML=`
+    <div class="sc-mbti">${selectedMBTI}（${typeInfo.name}）</div>
+    <div class="sc-icon">${stone.icon}</div>
+    <div class="sc-label">MBTI × POWER STONE</div>
+    <div class="sc-name">${stone.name}</div>
+    <div class="sc-rarity">✨ 全体の${stone.rarity}% ✨</div>
+    <div class="sc-traits">${stone.traits.join(' / ')}</div>
+    <div class="sc-url">💎 あなたも診断してみて</div>
+  `;
+
+  const shareText=`💎 MBTI × パワーストーン診断\n\n${selectedMBTI}（${typeInfo.name}）の私に\n最適な石は「${stone.name}」${stone.icon}\n\n${stone.traits.join('・')}\n全体のわずか${stone.rarity}%✨\n\nあなたのMBTIは何の石？👇`;
+  const shareUrl=window.location.href.split('?')[0];
+  document.getElementById('share-x').href=`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+  document.getElementById('share-line').href=`https://line.me/R/msg/text/?${encodeURIComponent(shareText+'\n'+shareUrl)}`;
+
+  generateShareImage(stone,typeInfo);
+}
+
+function generateShareImage(stone,typeInfo){
+  const c=document.getElementById('shareCanvas');const ctx=c.getContext('2d');
+  const bg=ctx.createLinearGradient(0,0,1080,1080);
+  bg.addColorStop(0,'#111118');bg.addColorStop(0.5,'#1A1A24');bg.addColorStop(1,'#111118');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1080);
+  // Accent
+  ctx.fillStyle='rgba(167,139,250,0.05)';ctx.beginPath();ctx.arc(200,300,400,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(244,114,182,0.04)';ctx.beginPath();ctx.arc(880,700,350,0,Math.PI*2);ctx.fill();
+  // Border
+  ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=2;ctx.strokeRect(40,40,1000,1000);
+  // Top line gradient
+  const topGrad=ctx.createLinearGradient(40,40,1040,40);
+  topGrad.addColorStop(0,'#A78BFA');topGrad.addColorStop(0.5,'#F472B6');topGrad.addColorStop(1,'#34D399');
+  ctx.strokeStyle=topGrad;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(40,42);ctx.lineTo(1040,42);ctx.stroke();
+  // Badge
+  ctx.fillStyle='#A78BFA';ctx.font='bold 22px sans-serif';ctx.textAlign='center';
+  ctx.fillText('MBTI × POWER STONE',540,110);
+  // MBTI
+  ctx.fillStyle='#A78BFA';ctx.font='bold 60px "Inter",sans-serif';
+  ctx.fillText(selectedMBTI,540,210);
+  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='22px sans-serif';
+  ctx.fillText(typeInfo.name||'',540,245);
+  // Stone
+  ctx.font='100px serif';ctx.fillText(stone.icon,540,400);
+  ctx.fillStyle='#FBBF24';ctx.font='bold 48px serif';ctx.fillText(stone.name,540,490);
+  ctx.fillStyle='rgba(251,191,36,0.5)';ctx.font='18px sans-serif';ctx.fillText(stone.nameEn,540,520);
+  // Rarity
+  ctx.fillStyle='#FBBF24';ctx.font='bold 24px sans-serif';
+  ctx.fillText(`✨ ${selectedMBTI} × ${stone.name} — 全体の${stone.rarity}% ✨`,540,600);
+  // Traits
+  ctx.fillStyle='#A78BFA';ctx.font='20px sans-serif';ctx.fillText(stone.traits.join('  ·  '),540,670);
+  // Reason
+  ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='18px sans-serif';
+  ctx.fillText(`💡 ${stone.reason.slice(0,40)}...`,540,740);
+  // CTA
+  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='22px sans-serif';ctx.fillText('あなたのMBTIは何の石？ 💎',540,880);
+  ctx.fillStyle='rgba(255,255,255,0.15)';ctx.font='16px sans-serif';ctx.fillText('MBTI × パワーストーン診断',540,960);
+}
+
+function saveShareImage(){
+  const c=document.getElementById('shareCanvas');const l=document.createElement('a');
+  l.download=`MBTI_${selectedMBTI}_${stones[resultStoneKey].name}.png`;l.href=c.toDataURL('image/png');l.click();
+}
+function shareThreads(){
+  const s=stones[resultStoneKey];const t=mbtiTypes.find(t=>t.code===selectedMBTI)||{name:''};
+  const text=`💎 MBTI×パワーストーン診断\n\n${selectedMBTI}（${t.name}）の私に最適な石は\n「${s.name}」${s.icon}\n\n${s.traits.join('・')}\n全体のわずか${s.rarity}%✨\n\nあなたも試してみて👇`;
+  if(navigator.share)navigator.share({text,url:location.href.split('?')[0]}).catch(()=>{});
+  else navigator.clipboard.writeText(text+'\n'+location.href.split('?')[0]).then(()=>alert('コピーしました！'));
+}
+function shareIG(){saveShareImage();alert('画像を保存しました！\nInstagramストーリーに貼り付けてね')}
+function retry(){selectedMBTI=null;document.querySelectorAll('.mbti-type').forEach(e=>e.classList.remove('selected'));document.getElementById('start-btn').disabled=true;showScreen('screen-start')}
+
+const base=18291;const days=Math.floor((Date.now()-new Date('2025-01-01').getTime())/86400000);
+const el=document.getElementById('total-count');if(el)el.textContent=(base+days*11+Math.floor(Math.random()*7)).toLocaleString();
+</script>
+</body>
+</html>
