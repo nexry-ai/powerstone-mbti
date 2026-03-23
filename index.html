@@ -172,6 +172,24 @@
   .compat-item .compat-pct{font-size:13px;color:var(--mint);font-weight:700}
   .compat-note{font-size:11px;color:var(--sub);margin-top:8px}
 
+  /* Bracelet 3-stone layout */
+  .bracelet-card{
+    background:linear-gradient(145deg,rgba(167,139,250,0.08),rgba(244,114,182,0.08));
+    border:1px solid rgba(167,139,250,0.3);border-radius:20px;padding:28px 20px;
+    margin-bottom:16px;text-align:center;
+  }
+  .bracelet-card h3{font-size:16px;color:var(--gold);margin-bottom:6px;line-height:1.6;font-weight:700}
+  .bracelet-card .bracelet-sub{font-size:13px;color:var(--purple);margin-bottom:20px}
+  .bracelet-stones-row{display:flex;justify-content:center;align-items:flex-end;gap:18px;margin-bottom:16px}
+  .bracelet-stone-item{text-align:center;flex:0 0 auto}
+  .bracelet-stone-item.main .bs-icon{font-size:52px;animation:float 3s ease-in-out infinite}
+  .bracelet-stone-item.support .bs-icon{font-size:36px;opacity:0.85}
+  .bs-name{font-size:12px;color:var(--gold);margin-top:4px;font-weight:500}
+  .bs-role{font-size:10px;letter-spacing:2px;margin-top:2px;font-weight:700}
+  .bracelet-stone-item.main .bs-role{color:var(--gold)}
+  .bracelet-stone-item.support .bs-role{color:var(--purple);opacity:0.7}
+  .bracelet-msg{font-size:13px;color:var(--sub);margin-top:12px;line-height:1.6;font-style:italic}
+
   /* Compare result */
   .compare-result{
     background:linear-gradient(145deg,rgba(167,139,250,0.08),rgba(244,114,182,0.08));
@@ -363,20 +381,21 @@
 <div class="screen" id="screen-result">
   <div class="result-card" id="result-card"></div>
   <div class="mbti-insight" id="mbti-insight"></div>
+  <div class="bracelet-card" id="bracelet-card"></div>
   <div class="compat-section" id="compat-section"></div>
   <div id="compare-result-section"></div>
   <div class="cta-section">
-    <h3>🔓 <span id="cta-name">あなた</span>専用の<br>MBTI×ストーン鑑定書</h3>
+    <h3>🔓 <span id="cta-name">あなた</span>専用の<br>開運ブレスレットを受け取る</h3>
     <ul class="cta-benefits">
-      <li>性格タイプ別の詳細メッセージ全文</li>
-      <li>あなたのMBTI×石の相性レポート</li>
-      <li>弱点を補うサブストーン3選</li>
-      <li>タイプ別・開運の過ごし方</li>
+      <li>あなたのMBTI×3石の詳細な相性鑑定</li>
+      <li>メイン石+サポート石2つの最強構成</li>
+      <li>タイプ別・開運ブレスレットの効果</li>
+      <li>弱点を補うサブストーン解説</li>
       <li>相性の良いMBTIタイプ情報</li>
       <li>🎁 今月の開運カレンダー（PDF）</li>
       <li>🔮 毎月届くタイプ別メッセージ</li>
     </ul>
-    <a href="#" class="cta-button" id="line-cta">📱 LINEで鑑定書を受け取る</a>
+    <a href="#" class="cta-button" id="line-cta">📱 <span id="cta-name2">あなた</span>専用の開運ブレスレットを受け取る</a>
     <p class="cta-sub">無料・30秒で完了・いつでもブロックOK</p>
     <p class="cta-urgency">🔥 本日あと <strong id="slots-left">19</strong>名 限定</p>
     <div class="countdown-timer" id="countdown-timer">
@@ -385,7 +404,7 @@
     </div>
   </div>
   <div class="share-section">
-    <p>💎 あなたのタイプをシェアしよう</p>
+    <p>💎 あなたのブレスレットをシェアしよう</p>
     <p class="share-sub">同じMBTIの人、相性の良いタイプの人を見つけて</p>
     <div class="share-card-preview" id="share-card-preview"></div>
     <button class="save-card-btn" onclick="saveShareImage()">📷 結果画像を保存</button>
@@ -461,7 +480,7 @@ function playSparkle() {
 
 // ======== Toast Notifications ========
 const toastCities = ['東京','大阪','名古屋','福岡','札幌','横浜','神戸','京都','仙台','広島'];
-const toastStoneNames = ['ラピスラズリ','ラリマー','ルチルクォーツ','翡翠','ラブラドライト','サンストーン','スギライト','ムーンストーン','カーネリアン'];
+const toastStoneNames = ['ラピスラズリ','ラリマー','ルチルクォーツ','翡翠','ラブラドライト','サンストーン','スギライト'];
 
 function showToast() {
   const el = document.getElementById('toast-notification');
@@ -511,10 +530,17 @@ const mbtiTypes = [
 ];
 
 const mbtiStoneMap = {
-  INTJ:'intuition', INTP:'transform', ENTJ:'action', ENTP:'create',
-  INFJ:'heal', INFP:'love', ENFJ:'balance', ENFP:'create',
-  ISTJ:'protect', ISFJ:'protect', ESTJ:'wealth', ESFJ:'love',
-  ISTP:'action', ISFP:'balance', ESTP:'wealth', ESFP:'create',
+  INTJ:'intuition', INTP:'transform', ENTJ:'action', ENTP:'transform',
+  INFJ:'heal', INFP:'love', ENFJ:'love', ENFP:'intuition',
+  ISTJ:'protect', ISFJ:'protect', ESTJ:'wealth', ESFJ:'heal',
+  ISTP:'action', ISFP:'love', ESTP:'wealth', ESFP:'action',
+};
+
+const mbtiStoneTitle = {
+  INTJ:'真実の探求者', INTP:'知的変容', ENTJ:'生まれながらのリーダー', ENTP:'革新者',
+  INFJ:'静かな癒し手', INFP:'深い愛と共感', ENFJ:'人を導く愛', ENFP:'直感の冒険者',
+  ISTJ:'堅実な守護者', ISFJ:'献身の守り手', ESTJ:'実務の成功者', ESFJ:'温かな癒し',
+  ISTP:'冷静な行動者', ISFP:'繊細な美の追求', ESTP:'チャンスを掴む者', ESFP:'太陽のような存在',
 };
 
 const stones = {
@@ -523,7 +549,7 @@ const stones = {
     message:'紀元前3000年——エジプトのファラオ・ツタンカーメンの黄金の棺には、この青い石が散りばめられていた。\n\n「天空の破片」と呼ばれたラピスラズリは、古代から王族と神官だけが持つことを許された叡智の石。\n\nあなたの内なる直感——まだ言語化できない「何か」を感じ取る力を、この石は3000年の時を超えて覚醒させる。\n\n目を閉じて。あなたの第三の眼が、今、開こうとしている。',
     reason:'INTJの深い洞察力と戦略的思考に、ラピスラズリの叡智のエネルギーが完全に共鳴するため'},
   love:{name:'ラリマー',nameEn:'LARIMAR',icon:'🩵',rarity:3.8,price:12800,traits:['無条件の愛','魂の浄化','カリブの癒し','感情の解放'],chakra:'第4・第5チャクラ',
-    compat:[{stone:'balance',pct:95,types:'ISFP・ENFJ'},{stone:'heal',pct:89,types:'INFJ・INFP'}],
+    compat:[{stone:'heal',pct:95,types:'INFJ・ESFJ'},{stone:'intuition',pct:89,types:'INTJ・ENFP'}],
     message:'カリブ海に浮かぶドミニカ共和国。その火山の奥深くでしか採れない、世界三大ヒーリングストーンの一つ。\n\nラリマーの透き通るブルーは「カリブ海を閉じ込めた石」と呼ばれ、見る者の心を一瞬で溶かす。\n\n愛に傷ついたことがある人、人を信じることに疲れた人——この石はあなたの心の奥にある「愛したい」という本能を、もう一度目覚めさせる。\n\n世界でここだけの石が、あなたのためだけに輝いている。',
     reason:'深い共感力と他者への愛情を持つタイプに、ラリマーの無条件の愛が共鳴するため'},
   wealth:{name:'ルチルクォーツ',nameEn:'RUTILATED QUARTZ',icon:'✨',rarity:6.5,price:12800,traits:['金運の極大化','財の引き寄せ','勝負運の覚醒','豊穣のエネルギー'],chakra:'第3チャクラ',
@@ -531,29 +557,21 @@ const stones = {
     message:'透明な水晶の中に、金色の針が無数に走る——それがルチルクォーツ。\n\n中国では「金銭石」と呼ばれ、華僑の大富豪たちが必ず身につける「金運最強の石」として知られる。\n\n偶然ではない。この石を持つ者の元に、不思議とチャンスが集まり、決断が冴え、お金の流れが変わり始める。\n\nあなたの中に眠る「稼ぐ才能」を、金の針が貫いて目覚めさせる。',
     reason:'目標達成力と実行力に優れるタイプに、ルチルクォーツの財運エネルギーが加速をもたらすため'},
   protect:{name:'翡翠',nameEn:'JADEITE',icon:'🟢',rarity:7.3,price:12800,traits:['守護と結界','魔除けの聖石','長寿と繁栄','不動の安定'],chakra:'第4チャクラ',
-    compat:[{stone:'wealth',pct:91,types:'ESTJ・ESTP'},{stone:'balance',pct:85,types:'ISFJ・ESFJ'}],
+    compat:[{stone:'wealth',pct:91,types:'ESTJ・ESTP'},{stone:'heal',pct:85,types:'INFJ・ESFJ'}],
     message:'日本の「国石」にして、中国では5000年間「金よりも価値がある」とされてきた聖なる石。\n\n翡翠は持ち主を選ぶ——あなたに必要な守護を、この石は静かに、しかし絶対的な力で与える。\n\n災いを退け、人間関係の毒を浄化し、あなたの大切な人と場所を見えない結界で守り続ける。\n\n何千年もの間、王と賢者が信じた守護の力が、今あなたの手の中に。',
     reason:'責任感が強く大切なものを守りたいタイプに、翡翠の絶対的守護力が呼応するため'},
   transform:{name:'ラブラドライト',nameEn:'LABRADORITE',icon:'🌌',rarity:4.7,price:9800,traits:['変容と覚醒','多次元の扉','創造性の爆発','直感と論理の融合'],chakra:'第6チャクラ',
-    compat:[{stone:'intuition',pct:92,types:'INTJ・INTP'},{stone:'create',pct:87,types:'ENFP・ENTP'}],
+    compat:[{stone:'intuition',pct:92,types:'INTJ・ENFP'},{stone:'action',pct:87,types:'ENTJ・ISTP'}],
     message:'光の角度を変えた瞬間、石の内部に虹色の炎が走る——ラブラドレッセンス。\n\nこの神秘的な光学現象を持つラブラドライトは、「変容の石」と呼ばれる。今の自分から次の自分へ。\n\n人生の転換期にいる人、何かを変えたいけど怖い人——この石はあなたの中の「もう一人の自分」を呼び覚ます。\n\n蝶が蛹を破るように、あなたの変容は、もう始まっている。',
     reason:'多面的な思考と変化を求めるタイプに、ラブラドライトの変容エネルギーが強く共鳴するため'},
   action:{name:'サンストーン',nameEn:'SUNSTONE',icon:'☀️',rarity:5.9,price:9800,traits:['太陽の意志力','決断と実行','リーダーの覇気','冒険心の点火'],chakra:'第2・第3チャクラ',
-    compat:[{stone:'wealth',pct:90,types:'ESTJ・ESTP'},{stone:'create',pct:84,types:'ENFP・ESFP'}],
+    compat:[{stone:'wealth',pct:90,types:'ESTJ・ESTP'},{stone:'transform',pct:84,types:'INTP・ENTP'}],
     message:'1000年前、ヴァイキングは曇天の大西洋を渡るとき、この石を空にかざして太陽の位置を知った。\n\nサンストーン——「太陽の羅針盤」と呼ばれた伝説の航海石は、迷いを断ち切り、進むべき方向を示す。\n\nあなたの中にある「やりたいこと」。でも踏み出せない一歩。この石が背中を押すのではなく、あなた自身の太陽を灯す。\n\n迷いの霧を、あなたの内なる太陽が焼き払う。',
     reason:'行動力と決断力を武器にするタイプに、サンストーンの太陽エネルギーがさらなる推進力を与えるため'},
   heal:{name:'スギライト',nameEn:'SUGILITE',icon:'💜',rarity:3.2,price:12800,traits:['魂の深層浄化','霊的覚醒','究極の癒し','精神世界の扉'],chakra:'第7チャクラ',
     compat:[{stone:'intuition',pct:96,types:'INTJ・INTP'},{stone:'love',pct:88,types:'INFP・ESFJ'}],
     message:'1944年、日本人鉱物学者・杉健一が瀬戸内海の岩城島で発見した、世界三大ヒーリングストーンの一つ。\n\nスギライトの深い紫は「20世紀最大の発見」と呼ばれ、持つ者の魂を最も深いレベルで浄化する。\n\n日本人が見つけた石が、今、日本人のあなたの元に還ってきた——それは偶然ではない。\n\n心の傷、過去のトラウマ、見えない疲れ。すべてをこの紫の光が、静かに溶かしていく。',
     reason:'繊細な感受性と深い精神世界を持つタイプに、スギライトの究極の浄化力が魂レベルで共鳴するため'},
-  balance:{name:'ムーンストーン',nameEn:'MOONSTONE',icon:'🌙',rarity:8.4,price:9800,traits:['月の女神の祝福','陰陽の調和','感情の安定','女性性の覚醒'],chakra:'第2チャクラ',
-    compat:[{stone:'love',pct:93,types:'INFP・ESFJ'},{stone:'heal',pct:86,types:'INFJ・ISFJ'}],
-    message:'古代ローマ人は、この石の中に月の女神ダイアナが宿ると信じた。\n\nムーンストーンの内部で揺らめく青白い光——「シラー効果」は、月光そのものを閉じ込めたかのよう。\n\n頑張りすぎる人、バランスを崩しがちな人——月の満ち欠けのように、あなたにも「満ちる時」と「休む時」がある。\n\nこの石は、あなたが忘れかけていた「自分を満たす」という本能を、静かに呼び覚ます。',
-    reason:'調和とバランスを大切にするタイプに、ムーンストーンの陰陽調和エネルギーが深く響くため'},
-  create:{name:'カーネリアン',nameEn:'CARNELIAN',icon:'🔥',rarity:12.0,price:9800,traits:['創造の炎','勇気の覚醒','生命力の爆発','情熱のエンジン'],chakra:'第1・第2チャクラ',
-    compat:[{stone:'transform',pct:89,types:'INTP・ISFP'},{stone:'action',pct:83,types:'ENTJ・ISTP'}],
-    message:'ナポレオン・ボナパルトは、エジプト遠征で手に入れた八角形のカーネリアンを終生手放さなかった。\n\n古代エジプトでは「夕陽の石」と呼ばれ、創造神ラーの力が宿ると信じられたこの石は、持つ者に「創る力」と「立ち向かう勇気」を与える。\n\nアイデアはあるのに形にできない。やりたいことはあるのに踏み出せない——その壁を、この石の炎が溶かす。\n\nナポレオンが世界を変えたように、あなたの創造力が、今ここから動き出す。',
-    reason:'創造性と好奇心に溢れるタイプに、カーネリアンの情熱と創造のエネルギーが点火するため'},
 };
 
 const mbtiQuestions = [
@@ -606,7 +624,7 @@ const stoneQuestions = [
 let selectedMBTI = null;
 let currentQ = 0;
 let mbtiScores = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-let stoneScores = {protect:0,intuition:0,love:0,action:0,heal:0,transform:0,wealth:0,balance:0,create:0};
+let stoneScores = {protect:0,intuition:0,love:0,action:0,heal:0,transform:0,wealth:0};
 let resultStoneKey = '';
 let mode = '';
 let userName = '';
@@ -672,7 +690,7 @@ function startKnown() {
   userName = document.getElementById('nickname-input').value.trim() || 'あなた';
   mode='known';
   currentQ=0;
-  stoneScores={protect:0,intuition:0,love:0,action:0,heal:0,transform:0,wealth:0,balance:0,create:0};
+  stoneScores={protect:0,intuition:0,love:0,action:0,heal:0,transform:0,wealth:0};
   showStoneQuestion();
 }
 
@@ -705,7 +723,7 @@ function startUnknown() {
   mode='unknown';
   currentQ=0;
   mbtiScores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-  stoneScores={protect:0,intuition:0,love:0,action:0,heal:0,transform:0,wealth:0,balance:0,create:0};
+  stoneScores={protect:0,intuition:0,love:0,action:0,heal:0,transform:0,wealth:0};
   showMBTIQuestion();
 }
 
@@ -857,7 +875,7 @@ function showLoading(){
   const msgs=[
     `${selectedMBTI}（${typeInfo.name}）の性格を解析中...`,
     `${displayName}の性格特性をマッピング中...`,
-    '16タイプ×9石の相性を計算中...',
+    '16タイプ×7石の相性を計算中...',
     'パワーストーンとの共鳴度を測定中...',
     `${displayName}に最適な石を選定中...`,
     '専用の鑑定書を作成中...'
@@ -913,13 +931,15 @@ function showResult(){
   const firstLine = msgLines[0] || '';
   const restLines = msgLines.slice(1).join('\n');
 
+  const stoneTitle = mbtiStoneTitle[selectedMBTI] || '';
+
   document.getElementById('result-card').innerHTML=`
     <div class="result-mbti-badge">${selectedMBTI}</div>
     <div class="result-stone-icon">${stone.icon}</div>
-    <div class="result-label">${displayName}の性格が求める石</div>
+    <div class="result-label">${displayName}のタイプが導く開運ブレスレット</div>
     <div class="result-name">${stone.name}</div>
     <div class="result-name-en">${stone.nameEn}</div>
-    <div class="rarity-badge">✨ ${selectedMBTI} × ${stone.name} — 全体の <strong>${stone.rarity}%</strong></div>
+    <div class="rarity-badge">✨ ${selectedMBTI}「${stoneTitle}」— 全体の <strong>${stone.rarity}%</strong></div>
     <div class="result-traits">${stone.traits.map(t=>`<span class="trait-tag">${t}</span>`).join('')}</div>
     <div class="result-reason">💡 <strong>なぜこの石？</strong><br>${stone.reason}</div>
     <div class="message-preview">
@@ -933,8 +953,23 @@ function showResult(){
     </div>
   `;
 
+  // Bracelet 3-stone card
+  const support1 = stones[stone.compat[0].stone];
+  const support2 = stones[stone.compat[1].stone];
+  document.getElementById('bracelet-card').innerHTML = `
+    <h3>💎 ${displayName}の開運ブレスレット構成</h3>
+    <div class="bracelet-sub">3石の最強構成</div>
+    <div class="bracelet-stones-row">
+      <div class="bracelet-stone-item support"><div class="bs-icon">${support1.icon}</div><div class="bs-name">${support1.name}</div><div class="bs-role">SUPPORT</div></div>
+      <div class="bracelet-stone-item main"><div class="bs-icon">${stone.icon}</div><div class="bs-name">${stone.name}</div><div class="bs-role">MAIN</div></div>
+      <div class="bracelet-stone-item support"><div class="bs-icon">${support2.icon}</div><div class="bs-name">${support2.name}</div><div class="bs-role">SUPPORT</div></div>
+    </div>
+    <div class="bracelet-msg">「この3石の組み合わせは${displayName}専用の最強構成です」</div>
+  `;
+
   // CTA name
   document.getElementById('cta-name').textContent = displayName;
+  document.getElementById('cta-name2').textContent = displayName;
 
   document.getElementById('mbti-insight').innerHTML=`
     <h3>🧠 ${selectedMBTI}（${typeInfo.name}）× ${stone.name}</h3>
@@ -962,15 +997,15 @@ function showResult(){
   document.getElementById('share-card-preview').innerHTML=`
     <div class="sc-mbti">${selectedMBTI}（${typeInfo.name}）</div>
     <div class="sc-icon">${stone.icon}</div>
-    <div class="sc-label">MBTI × POWER STONE</div>
+    <div class="sc-label">MBTI × 開運ブレスレット</div>
     <div class="sc-name">${stone.name}</div>
-    <div class="sc-rarity">✨ 全体の${stone.rarity}% ✨</div>
-    <div class="sc-traits">${stone.traits.join(' / ')}</div>
-    <div class="sc-url">💎 ${displayName}も診断してみて</div>
+    <div class="sc-rarity">✨ ${stoneTitle} — 全体の${stone.rarity}% ✨</div>
+    <div class="sc-traits">${support1.icon} ${support1.name} + ${stone.icon} ${stone.name} + ${support2.icon} ${support2.name}</div>
+    <div class="sc-url">💎 あなたも診断してみて</div>
   `;
 
   const who = userName === 'あなた' ? '私' : userName;
-  const shareText=`💎 MBTI × パワーストーン診断\n\n${selectedMBTI}（${typeInfo.name}）の${who}に\n最適な石は「${stone.name}」${stone.icon}\n\n${stone.traits.join('・')}\n全体のわずか${stone.rarity}%✨\n\nあなたのMBTIは何の石？👇`;
+  const shareText=`💎 MBTI × 開運ブレスレット診断\n\n${selectedMBTI}（${typeInfo.name}）の${who}の\n開運ブレスレットは「${stone.name}」${stone.icon}\n\n${support1.icon}${support1.name} + ${stone.icon}${stone.name} + ${support2.icon}${support2.name}\n全体のわずか${stone.rarity}%✨\n\nあなたのMBTIは何の石？👇`;
   const shareUrl=window.location.href.split('?')[0];
   document.getElementById('share-x').href=`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
   document.getElementById('share-line').href=`https://line.me/R/msg/text/?${encodeURIComponent(shareText+'\n'+shareUrl)}`;
@@ -1081,15 +1116,18 @@ function generateShareImage(stone,typeInfo){
   ctx.fillStyle='#FBBF24';ctx.font='bold 48px serif';ctx.fillText(stone.name,540,490);
   ctx.fillStyle='rgba(251,191,36,0.5)';ctx.font='18px sans-serif';ctx.fillText(stone.nameEn,540,520);
   // Rarity
+  const stTitle = mbtiStoneTitle[selectedMBTI] || '';
   ctx.fillStyle='#FBBF24';ctx.font='bold 24px sans-serif';
-  ctx.fillText(`✨ ${selectedMBTI} × ${stone.name} — 全体の${stone.rarity}% ✨`,540,600);
-  // Traits
-  ctx.fillStyle='#A78BFA';ctx.font='20px sans-serif';ctx.fillText(stone.traits.join('  ·  '),540,670);
+  ctx.fillText(`✨ ${selectedMBTI}「${stTitle}」— 全体の${stone.rarity}% ✨`,540,600);
+  // Bracelet stones
+  const sp1=stones[stone.compat[0].stone],sp2=stones[stone.compat[1].stone];
+  ctx.fillStyle='#A78BFA';ctx.font='20px sans-serif';
+  ctx.fillText(`${sp1.icon} ${sp1.name}  +  ${stone.icon} ${stone.name}  +  ${sp2.icon} ${sp2.name}`,540,670);
   // Reason
   ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='18px sans-serif';
   ctx.fillText(`💡 ${stone.reason.slice(0,40)}...`,540,740);
   // CTA
-  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='22px sans-serif';ctx.fillText('あなたのMBTIは何の石？ 💎',540,880);
+  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='22px sans-serif';ctx.fillText('あなたの開運ブレスレットは？ 💎',540,880);
   ctx.fillStyle='rgba(255,255,255,0.15)';ctx.font='16px sans-serif';ctx.fillText('MBTI × パワーストーン診断',540,960);
 }
 
@@ -1100,7 +1138,8 @@ function saveShareImage(){
 function shareThreads(){
   const s=stones[resultStoneKey];const t=mbtiTypes.find(t=>t.code===selectedMBTI)||{name:''};
   const who = userName === 'あなた' ? '私' : userName;
-  const text=`💎 MBTI×パワーストーン診断\n\n${selectedMBTI}（${t.name}）の${who}に最適な石は\n「${s.name}」${s.icon}\n\n${s.traits.join('・')}\n全体のわずか${s.rarity}%✨\n\nあなたも試してみて👇`;
+  const sup1=stones[s.compat[0].stone],sup2=stones[s.compat[1].stone];
+  const text=`💎 MBTI×開運ブレスレット診断\n\n${selectedMBTI}（${t.name}）の${who}の\n開運ブレスレットは「${s.name}」${s.icon}\n\n${sup1.icon}${sup1.name} + ${s.icon}${s.name} + ${sup2.icon}${sup2.name}\n全体のわずか${s.rarity}%✨\n\nあなたも試してみて👇`;
   if(navigator.share)navigator.share({text,url:location.href.split('?')[0]}).catch(()=>{});
   else navigator.clipboard.writeText(text+'\n'+location.href.split('?')[0]).then(()=>alert('コピーしました！'));
 }
