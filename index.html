@@ -135,6 +135,10 @@
   .result-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px 22px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
   .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--pink),var(--mint))}
   .result-mbti-badge{display:inline-block;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.25);border-radius:8px;padding:4px 12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:900;color:var(--purple);margin-bottom:12px;letter-spacing:1px}
+  
+  .stone-photo{width:180px;height:180px;border-radius:50%;object-fit:cover;border:3px solid rgba(124,158,247,0.3);box-shadow:0 0 20px rgba(124,158,247,0.2);margin:0 auto 8px;display:block}
+  .stone-photo-small{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid rgba(124,158,247,0.2);box-shadow:0 0 10px rgba(124,158,247,0.15)}
+
   .result-stone-icon{font-size:56px;margin-bottom:10px;animation:float 3s ease-in-out infinite}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
   .result-label{font-size:11px;color:var(--sub);letter-spacing:3px;margin-bottom:6px}
@@ -584,31 +588,31 @@ const mbtiStoneTitle = {
 };
 
 const stones = {
-  intuition:{name:'ラピスラズリ',nameEn:'LAPIS LAZULI',icon:'💎',rarity:5.2,price:9800,traits:['天空の叡智','第三の眼の覚醒','真実の透視','宇宙意識の拡張'],chakra:'第6チャクラ',
+  intuition:{name:'ラピスラズリ',nameEn:'LAPIS LAZULI',icon:'💎',image:'images/lapis-lazuli.jpg',rarity:5.2,price:9800,traits:['天空の叡智','第三の眼の覚醒','真実の透視','宇宙意識の拡張'],chakra:'第6チャクラ',
     compat:[{stone:'heal',pct:94,types:'INFJ・INFP'},{stone:'transform',pct:88,types:'INTP・ISFP'}],
     message:'紀元前3000年——エジプトのファラオ・ツタンカーメンの黄金の棺には、この青い石が散りばめられていた。\n\n「天空の破片」と呼ばれたラピスラズリは、古代から王族と神官だけが持つことを許された叡智の石。\n\nあなたの内なる直感——まだ言語化できない「何か」を感じ取る力を、この石は3000年の時を超えて覚醒させる。\n\n目を閉じて。あなたの第三の眼が、今、開こうとしている。',
     reason:'INTJの深い洞察力と戦略的思考に、ラピスラズリの叡智のエネルギーが完全に共鳴するため'},
-  love:{name:'ラリマー',nameEn:'LARIMAR',icon:'🩵',rarity:3.8,price:12800,traits:['無条件の愛','魂の浄化','カリブの癒し','感情の解放'],chakra:'第4・第5チャクラ',
+  love:{name:'ラリマー',nameEn:'LARIMAR',icon:'🩵',image:'images/larimar.jpg',rarity:3.8,price:12800,traits:['無条件の愛','魂の浄化','カリブの癒し','感情の解放'],chakra:'第4・第5チャクラ',
     compat:[{stone:'heal',pct:95,types:'INFJ・ESFJ'},{stone:'intuition',pct:89,types:'INTJ・ENFP'}],
     message:'カリブ海に浮かぶドミニカ共和国。その火山の奥深くでしか採れない、世界三大ヒーリングストーンの一つ。\n\nラリマーの透き通るブルーは「カリブ海を閉じ込めた石」と呼ばれ、見る者の心を一瞬で溶かす。\n\n愛に傷ついたことがある人、人を信じることに疲れた人——この石はあなたの心の奥にある「愛したい」という本能を、もう一度目覚めさせる。\n\n世界でここだけの石が、あなたのためだけに輝いている。',
     reason:'深い共感力と他者への愛情を持つタイプに、ラリマーの無条件の愛が共鳴するため'},
-  wealth:{name:'ルチルクォーツ',nameEn:'RUTILATED QUARTZ',icon:'✨',rarity:6.5,price:12800,traits:['金運の極大化','財の引き寄せ','勝負運の覚醒','豊穣のエネルギー'],chakra:'第3チャクラ',
+  wealth:{name:'ルチルクォーツ',nameEn:'RUTILATED QUARTZ',icon:'✨',image:'images/rutilated-quartz.jpg',rarity:6.5,price:12800,traits:['金運の極大化','財の引き寄せ','勝負運の覚醒','豊穣のエネルギー'],chakra:'第3チャクラ',
     compat:[{stone:'action',pct:93,types:'ENTJ・ISTP'},{stone:'protect',pct:86,types:'ISTJ・ISFJ'}],
     message:'透明な水晶の中に、金色の針が無数に走る——それがルチルクォーツ。\n\n中国では「金銭石」と呼ばれ、華僑の大富豪たちが必ず身につける「金運最強の石」として知られる。\n\n偶然ではない。この石を持つ者の元に、不思議とチャンスが集まり、決断が冴え、お金の流れが変わり始める。\n\nあなたの中に眠る「稼ぐ才能」を、金の針が貫いて目覚めさせる。',
     reason:'目標達成力と実行力に優れるタイプに、ルチルクォーツの財運エネルギーが加速をもたらすため'},
-  protect:{name:'翡翠',nameEn:'JADEITE',icon:'🟢',rarity:7.3,price:12800,traits:['守護と結界','魔除けの聖石','長寿と繁栄','不動の安定'],chakra:'第4チャクラ',
+  protect:{name:'翡翠',nameEn:'JADEITE',icon:'🟢',image:'images/jadeite.jpg',rarity:7.3,price:12800,traits:['守護と結界','魔除けの聖石','長寿と繁栄','不動の安定'],chakra:'第4チャクラ',
     compat:[{stone:'wealth',pct:91,types:'ESTJ・ESTP'},{stone:'heal',pct:85,types:'INFJ・ESFJ'}],
     message:'日本の「国石」にして、中国では5000年間「金よりも価値がある」とされてきた聖なる石。\n\n翡翠は持ち主を選ぶ——あなたに必要な守護を、この石は静かに、しかし絶対的な力で与える。\n\n災いを退け、人間関係の毒を浄化し、あなたの大切な人と場所を見えない結界で守り続ける。\n\n何千年もの間、王と賢者が信じた守護の力が、今あなたの手の中に。',
     reason:'責任感が強く大切なものを守りたいタイプに、翡翠の絶対的守護力が呼応するため'},
-  transform:{name:'ラブラドライト',nameEn:'LABRADORITE',icon:'🌌',rarity:4.7,price:9800,traits:['変容と覚醒','多次元の扉','創造性の爆発','直感と論理の融合'],chakra:'第6チャクラ',
+  transform:{name:'ラブラドライト',nameEn:'LABRADORITE',icon:'🌌',image:'images/labradorite.jpg',rarity:4.7,price:9800,traits:['変容と覚醒','多次元の扉','創造性の爆発','直感と論理の融合'],chakra:'第6チャクラ',
     compat:[{stone:'intuition',pct:92,types:'INTJ・ENFP'},{stone:'action',pct:87,types:'ENTJ・ISTP'}],
     message:'光の角度を変えた瞬間、石の内部に虹色の炎が走る——ラブラドレッセンス。\n\nこの神秘的な光学現象を持つラブラドライトは、「変容の石」と呼ばれる。今の自分から次の自分へ。\n\n人生の転換期にいる人、何かを変えたいけど怖い人——この石はあなたの中の「もう一人の自分」を呼び覚ます。\n\n蝶が蛹を破るように、あなたの変容は、もう始まっている。',
     reason:'多面的な思考と変化を求めるタイプに、ラブラドライトの変容エネルギーが強く共鳴するため'},
-  action:{name:'サンストーン',nameEn:'SUNSTONE',icon:'☀️',rarity:5.9,price:9800,traits:['太陽の意志力','決断と実行','リーダーの覇気','冒険心の点火'],chakra:'第2・第3チャクラ',
+  action:{name:'サンストーン',nameEn:'SUNSTONE',icon:'☀️',image:'images/sunstone.jpg',rarity:5.9,price:9800,traits:['太陽の意志力','決断と実行','リーダーの覇気','冒険心の点火'],chakra:'第2・第3チャクラ',
     compat:[{stone:'wealth',pct:90,types:'ESTJ・ESTP'},{stone:'transform',pct:84,types:'INTP・ENTP'}],
     message:'1000年前、ヴァイキングは曇天の大西洋を渡るとき、この石を空にかざして太陽の位置を知った。\n\nサンストーン——「太陽の羅針盤」と呼ばれた伝説の航海石は、迷いを断ち切り、進むべき方向を示す。\n\nあなたの中にある「やりたいこと」。でも踏み出せない一歩。この石が背中を押すのではなく、あなた自身の太陽を灯す。\n\n迷いの霧を、あなたの内なる太陽が焼き払う。',
     reason:'行動力と決断力を武器にするタイプに、サンストーンの太陽エネルギーがさらなる推進力を与えるため'},
-  heal:{name:'スギライト',nameEn:'SUGILITE',icon:'💜',rarity:3.2,price:12800,traits:['魂の深層浄化','霊的覚醒','究極の癒し','精神世界の扉'],chakra:'第7チャクラ',
+  heal:{name:'スギライト',nameEn:'SUGILITE',icon:'💜',image:'images/sugilite.jpg',rarity:3.2,price:12800,traits:['魂の深層浄化','霊的覚醒','究極の癒し','精神世界の扉'],chakra:'第7チャクラ',
     compat:[{stone:'intuition',pct:96,types:'INTJ・INTP'},{stone:'love',pct:88,types:'INFP・ESFJ'}],
     message:'1944年、日本人鉱物学者・杉健一が瀬戸内海の岩城島で発見した、世界三大ヒーリングストーンの一つ。\n\nスギライトの深い紫は「20世紀最大の発見」と呼ばれ、持つ者の魂を最も深いレベルで浄化する。\n\n日本人が見つけた石が、今、日本人のあなたの元に還ってきた——それは偶然ではない。\n\n心の傷、過去のトラウマ、見えない疲れ。すべてをこの紫の光が、静かに溶かしていく。',
     reason:'繊細な感受性と深い精神世界を持つタイプに、スギライトの究極の浄化力が魂レベルで共鳴するため'},
@@ -654,7 +658,7 @@ const stoneQuestions = [
     ]},
   {title:"惹かれる色は？",sub:"今の気分で",
     options:[
-      {icon:"💜",text:"紫・ラベンダー",sub:"神秘・癒し",scores:{heal:2,intuition:1}},
+      {icon:"💜",image:'images/sugilite.jpg',text:"紫・ラベンダー",sub:"神秘・癒し",scores:{heal:2,intuition:1}},
       {icon:"💛",text:"金・イエロー",sub:"豊かさ・自信",scores:{wealth:2,action:1}},
       {icon:"🖤",text:"黒・ダーク",sub:"守護・強さ",scores:{protect:2,transform:1}},
       {icon:"💗",text:"ピンク・ローズ",sub:"愛・優しさ",scores:{love:2,heal:1}}
@@ -975,7 +979,7 @@ function showResult(){
 
   document.getElementById('result-card').innerHTML=`
     <div class="result-mbti-badge">${selectedMBTI}</div>
-    <div class="result-stone-icon">${stone.icon}</div>
+    <img class="stone-photo" src="${stone.image}" alt="${stone.name}" onerror="this.style.display='none'"><div class="result-stone-icon" style="font-size:32px">${stone.icon}</div>
     <div class="result-label">${displayName}のタイプが導く開運ブレスレット</div>
     <div class="result-name">${stone.name}</div>
     <div class="result-name-en">${stone.nameEn}</div>
@@ -1000,9 +1004,9 @@ function showResult(){
     <h3>💎 ${displayName}の開運ブレスレット構成</h3>
     <div class="bracelet-sub">3石の最強構成</div>
     <div class="bracelet-stones-row">
-      <div class="bracelet-stone-item support"><div class="bs-icon">${support1.icon}</div><div class="bs-name">${support1.name}</div><div class="bs-role">SUPPORT</div></div>
-      <div class="bracelet-stone-item main"><div class="bs-icon">${stone.icon}</div><div class="bs-name">${stone.name}</div><div class="bs-role">MAIN</div></div>
-      <div class="bracelet-stone-item support"><div class="bs-icon">${support2.icon}</div><div class="bs-name">${support2.name}</div><div class="bs-role">SUPPORT</div></div>
+      <div class="bracelet-stone-item support"><img class="stone-photo-small" src="${support1.image}" onerror="this.style.display='none'"><div class="bs-icon">${support1.icon}</div><div class="bs-name">${support1.name}</div><div class="bs-role">SUPPORT</div></div>
+      <div class="bracelet-stone-item main"><img class="stone-photo-small" src="${stone.image}" onerror="this.style.display='none'"><div class="bs-icon">${stone.icon}</div><div class="bs-name">${stone.name}</div><div class="bs-role">MAIN</div></div>
+      <div class="bracelet-stone-item support"><img class="stone-photo-small" src="${support2.image}" onerror="this.style.display='none'"><div class="bs-icon">${support2.icon}</div><div class="bs-name">${support2.name}</div><div class="bs-role">SUPPORT</div></div>
     </div>
     <div class="bracelet-msg">「この3石の組み合わせは${displayName}専用の最強構成です」</div>
   `;
@@ -1019,7 +1023,7 @@ function showResult(){
 
   const compatHtml=stone.compat.map(c=>{
     const cs=stones[c.stone];
-    return `<div class="compat-item"><div class="stone-mini">${cs.icon}</div><div class="compat-label">${cs.name}</div><div class="compat-types">${c.types}</div><div class="compat-pct">${c.pct}%</div></div>`;
+    return `<div class="compat-item"><img class="stone-photo-small" src="${cs.image}" onerror="this.style.display='none'" style="margin-bottom:4px"><div class="stone-mini">${cs.icon}</div><div class="compat-label">${cs.name}</div><div class="compat-types">${c.types}</div><div class="compat-pct">${c.pct}%</div></div>`;
   }).join('');
   document.getElementById('compat-section').innerHTML=`
     <h3>💫 相性の良い石タイプ（MBTIペア）</h3>
